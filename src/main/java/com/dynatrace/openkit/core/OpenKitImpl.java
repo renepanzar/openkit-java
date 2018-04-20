@@ -54,12 +54,9 @@ public class OpenKitImpl implements OpenKit {
     private final Logger logger;
 
     private final AtomicBoolean isShutdown = new AtomicBoolean(false);
+	private final ConnectorProvider connectorProvider;
 
-    private final ConnectorProvider connectorProvider;
-
-    private final Connector connector;
-
-    // *** constructors ***
+	// *** constructors ***
 
     public OpenKitImpl(Logger logger, Configuration config) {
         this(logger, config, new DefaultConnectorProvider(logger), new DefaultTimingProvider(), new DefaultThreadIDProvider());
@@ -74,7 +71,6 @@ public class OpenKitImpl implements OpenKit {
         beaconCache = new BeaconCacheImpl();
         beaconSender = new BeaconSender(configuration, connectorProvider, timingProvider);
         beaconCacheEvictor = new BeaconCacheEvictor(logger, beaconCache, configuration.getBeaconCacheConfiguration(), timingProvider);
-        connector = configuration.getConnector();
     }
 
     /**
@@ -121,14 +117,11 @@ public class OpenKitImpl implements OpenKit {
         if (isShutdown.get()) {
             return NULL_SESSION;
         }
-        // create beacon for session
-        //Beacon beacon = new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider,
-		//		connectorProvider);
-
-		IPayloadGenerator beacon = new PayloadGenerator(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider);
+        // create payload generator for session
+		IPayloadGenerator payloadGenerator = new PayloadGenerator(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider);
 
         // create session
-        return new SessionImpl(logger, beaconSender, beacon);
+        return new SessionImpl(logger, beaconSender, payloadGenerator);
     }
 
     @Override

@@ -16,13 +16,13 @@
 
 package com.dynatrace.openkit.core.configuration;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.dynatrace.openkit.api.SSLTrustManager;
 import com.dynatrace.openkit.core.Device;
-import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.protocol.StatusResponse;
+import com.dynatrace.openkit.providers.ConnectorProvider;
 import com.dynatrace.openkit.providers.SessionIDProvider;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The Configuration class holds all configuration settings, both provided by the user and the Dynatrace/AppMon server.
@@ -57,13 +57,13 @@ public class Configuration {
 
     private SessionIDProvider sessionIDProvider;
 
-    private Connector connector;
+    private ConnectorProvider connectorProvider;
 
     // *** constructors ***
 
     public Configuration(OpenKitType openKitType, String applicationName, String deviceID,
                          SessionIDProvider sessionIDProvider, SSLTrustManager trustManager, Device device, String applicationVersion,
-                         BeaconCacheConfiguration beaconCacheConfiguration, Connector connector) {
+                         BeaconCacheConfiguration beaconCacheConfiguration, ConnectorProvider connectorProvider) {
 
         this.openKitType = openKitType;
 
@@ -86,7 +86,8 @@ public class Configuration {
                 openKitType.getDefaultServerID(),
                 "",
                 trustManager);
-        this.connector = connector;
+
+        this.connectorProvider = connectorProvider;
 
         this.applicationVersion = applicationVersion;
 
@@ -96,10 +97,6 @@ public class Configuration {
     }
 
     // *** public methods ***
-
-    public Connector getConnector(){
-        return connector;
-    }
 
     // return next session number
     public int createSessionNumber() {
@@ -173,6 +170,8 @@ public class Configuration {
     public String getDeviceID() {
         return deviceID;
     }
+
+    public ConnectorProvider getConnectorProvider() { return this.connectorProvider; }
 
     /**
      * Enable capturing.

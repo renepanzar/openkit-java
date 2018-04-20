@@ -8,6 +8,7 @@ import com.dynatrace.openkit.core.SessionImpl;
 import com.dynatrace.openkit.core.WebRequestTracerBaseImpl;
 import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
+import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
 import com.dynatrace.openkit.protocol.dto.Action;
 import com.dynatrace.openkit.protocol.dto.Payload;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
@@ -27,6 +28,7 @@ public class PayloadGenerator implements IPayloadGenerator {
 	private static final String TAG_PREFIX = "MT";
 	private final long sessionStartTime;
 	private final String clientIPAddress;
+	private final HTTPClientConfiguration httpClientConfig;
 
 	// next ID and sequence number
 	private AtomicInteger nextID = new AtomicInteger(0);
@@ -72,6 +74,8 @@ public class PayloadGenerator implements IPayloadGenerator {
 				configuration.createSessionNumber(),
 				sessionStartTime,
 				String.valueOf(configuration.getDeviceID()));
+
+		this.httpClientConfig = configuration.getHttpClientConfig();
 	}
 
 	/**
@@ -291,8 +295,10 @@ public class PayloadGenerator implements IPayloadGenerator {
 	public StatusResponse send() {
 		StatusResponse retVal = null;
 
+		Connector connector = configuration.getConnectorProvider().createConnector(httpClientConfig);
+
 		synchronized (this) {
-			retVal = configuration.getConnector().sendBeaconRequest(clientIPAddress, payload);
+			retVal = connector.sendBeaconRequest(clientIPAddress, payload);
 			payload.clearActions();
 		}
 

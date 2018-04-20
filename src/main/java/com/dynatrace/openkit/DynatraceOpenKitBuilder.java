@@ -16,11 +16,13 @@
 
 package com.dynatrace.openkit;
 
+import com.dynatrace.openkit.api.Logger;
 import com.dynatrace.openkit.core.Device;
 import com.dynatrace.openkit.core.configuration.BeaconCacheConfiguration;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.OpenKitType;
-import com.dynatrace.openkit.protocol.Connector;
+import com.dynatrace.openkit.providers.ConnectorProvider;
+import com.dynatrace.openkit.providers.DefaultConnectorProvider;
 import com.dynatrace.openkit.providers.DefaultSessionIDProvider;
 
 /**
@@ -62,6 +64,12 @@ public class DynatraceOpenKitBuilder extends AbstractOpenKitBuilder {
             getBeaconCacheLowerMemoryBoundary(),
             getBeaconCacheUpperMemoryBoundary());
 
+		Logger logger = getLogger();
+		ConnectorProvider connectorProvider = getConnectorProvider();
+        if (connectorProvider == null) {
+        	connectorProvider = new DefaultConnectorProvider(logger);
+		}
+
         return new Configuration(
             OpenKitType.DYNATRACE,
             applicationName,
@@ -71,6 +79,6 @@ public class DynatraceOpenKitBuilder extends AbstractOpenKitBuilder {
             device,
             getApplicationVersion(),
             beaconCacheConfiguration,
-            getConnector());
+            getConnectorProvider());
     }
 }
