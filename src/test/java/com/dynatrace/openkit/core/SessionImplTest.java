@@ -22,13 +22,12 @@ import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
 import com.dynatrace.openkit.protocol.Beacon;
-import com.dynatrace.openkit.protocol.HTTPClient;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,8 +40,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.*;
-
-import sun.net.www.http.HttpClient;
 
 /**
  * Tests the session implementation having some knowledge of the internals of beacon and beacon cache.
@@ -397,8 +394,8 @@ public class SessionImplTest {
 
     @Test
     public void endSessionWithOpenRootActions() {
-		// mock a valid status response via the HTTPClient to be sure the beacon cache is empty
-		final HTTPClient httpClient = mock(HTTPClient.class);
+		// mock a valid status response via the HTTPConnector to be sure the beacon cache is empty
+		final HTTPConnector httpClient = mock(HTTPConnector.class);
 		final StatusResponse statusResponse = new StatusResponse("", 200);
 		when(httpClient.sendBeaconRequest(isA(String.class), any(byte[].class))).thenReturn(statusResponse);
 		final HTTPClientProvider clientProvider = mock(HTTPClientProvider.class);

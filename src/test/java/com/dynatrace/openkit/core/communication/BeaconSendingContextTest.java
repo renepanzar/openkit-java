@@ -19,7 +19,7 @@ package com.dynatrace.openkit.core.communication;
 import com.dynatrace.openkit.core.SessionImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
-import com.dynatrace.openkit.protocol.HTTPClient;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
@@ -304,7 +304,7 @@ public class BeaconSendingContextTest {
     @Test
     public void testGetHTTPClient() {
 
-        HTTPClient mockClient = mock(HTTPClient.class);
+        HTTPConnector mockClient = mock(HTTPConnector.class);
         HTTPClientConfiguration mockConfiguration = mock(HTTPClientConfiguration.class);
 
         when(configuration.getHttpClientConfig()).thenReturn(mockConfiguration);
@@ -314,7 +314,7 @@ public class BeaconSendingContextTest {
 
         verifyZeroInteractions(configuration, httpClientProvider);
 
-        HTTPClient obtained = target.getHTTPClient();
+        HTTPConnector obtained = target.getHTTPClient();
 
         assertThat(obtained, notNullValue());
         assertThat(obtained, is(sameInstance(mockClient)));

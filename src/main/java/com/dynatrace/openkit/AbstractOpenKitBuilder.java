@@ -205,7 +205,7 @@ public abstract class AbstractOpenKitBuilder {
      *
      * @return
      */
-    abstract Configuration buildConfiguration(Connector connector);
+    abstract Configuration buildConfiguration();
 
     /**
      * Builds a new {@code OpenKit} instance
@@ -214,7 +214,7 @@ public abstract class AbstractOpenKitBuilder {
      */
     public OpenKit build() {
         // create and initialize OpenKit instance
-        OpenKitImpl openKit = new OpenKitImpl(getLogger(), buildConfiguration(connector));
+        OpenKitImpl openKit = new OpenKitImpl(getLogger(), buildConfiguration());
         openKit.initialize();
 
         return openKit;

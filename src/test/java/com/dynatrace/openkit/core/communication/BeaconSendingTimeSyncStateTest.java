@@ -16,7 +16,7 @@
 
 package com.dynatrace.openkit.core.communication;
 
-import com.dynatrace.openkit.protocol.HTTPClient;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.TimeSyncResponse;
 import com.dynatrace.openkit.providers.TimingProvider;
 
@@ -32,14 +32,14 @@ import static org.mockito.Mockito.*;
 
 public class BeaconSendingTimeSyncStateTest {
 
-    private HTTPClient httpClient;
+    private HTTPConnector httpClient;
     private BeaconSendingContext stateContext;
     private TimingProvider timingProvider;
 
     @Before
     public void setUp() {
 
-        httpClient = mock(HTTPClient.class);
+        httpClient = mock(HTTPConnector.class);
         stateContext = mock(BeaconSendingContext.class);
         timingProvider = mock(TimingProvider.class);
 
@@ -52,8 +52,20 @@ public class BeaconSendingTimeSyncStateTest {
     }
 
     @Test
-    public void timeSyncStateIsNotATerminalState() {
+	public void initialTimeSyncIsSkippedIfTimeSyncIsDisabled() {
+		// given
+		BeaconSendingTimeSyncState target = new BeaconSendingTimeSyncState();
+		stateContext.disableTimeSyncSupport();
 
+		// when
+		target.execute(stateContext);
+
+		// then
+		verify(stateContext, times(1)).setNextState(org.mockito.Matchers.any(BeaconSendingCaptureOnState.class));
+	}
+
+    @Test
+    public void timeSyncStateIsNotATerminalState() {
         // given
         BeaconSendingTimeSyncState target = new BeaconSendingTimeSyncState();
 

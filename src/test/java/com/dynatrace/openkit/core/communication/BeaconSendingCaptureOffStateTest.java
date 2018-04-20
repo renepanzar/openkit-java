@@ -16,7 +16,7 @@
 
 package com.dynatrace.openkit.core.communication;
 
-import com.dynatrace.openkit.protocol.HTTPClient;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class BeaconSendingCaptureOffStateTest {
     public void setUp() {
         StatusResponse mockResponse = mock(StatusResponse.class);
 
-        HTTPClient httpClient = mock(HTTPClient.class);
+        HTTPConnector httpClient = mock(HTTPConnector.class);
         when(httpClient.sendStatusRequest()).thenReturn(mockResponse);
 
         mockContext = mock(BeaconSendingContext.class);

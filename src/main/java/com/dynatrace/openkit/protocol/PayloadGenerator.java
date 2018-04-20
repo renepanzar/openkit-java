@@ -10,7 +10,6 @@ import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.protocol.dto.Action;
 import com.dynatrace.openkit.protocol.dto.Payload;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
@@ -55,7 +54,8 @@ public class PayloadGenerator {
 	 * @param threadIDProvider Provider for retrieving thread id.
 	 * @param timingProvider Provider for time related methods.
 	 */
-	public PayloadGenerator(Logger logger, BeaconCacheImpl beaconCache, Configuration configuration, String clientIPAddress, ThreadIDProvider threadIDProvider, TimingProvider timingProvider) {
+	public PayloadGenerator(Logger logger, BeaconCacheImpl beaconCache, Configuration configuration, String clientIPAddress,
+			ThreadIDProvider threadIDProvider, TimingProvider timingProvider) {
 		this.logger = logger;
 		this.beaconCache = beaconCache;
 		this.timingProvider = timingProvider;
@@ -121,6 +121,21 @@ public class PayloadGenerator {
 		Action actionDto = new Action();
 
 		// fill with data
+
+		// basic data
+		actionDto.setEventType(EventType.ACTION);
+		if (action.getName() != null) {
+			actionDto.setName(truncate(action.getName()));
+		}
+		actionDto.setThreadId(threadIDProvider.getThreadID());
+
+		// action specific
+		actionDto.setActionId(action.getID());
+		actionDto.setParentActionId(action.getParentID());
+		actionDto.setStartSequenceNumber(action.getStartSequenceNo());
+		actionDto.setStartTime(getTimeSinceSessionStartTime(action.getStartTime()));
+		actionDto.setEndSequenceNumber(action.getEndSequenceNo());
+		actionDto.setEndTime(action.getEndTime() - action.getStartTime());
 
 		synchronized (this) {
 			payload.addAction(actionDto);
@@ -263,16 +278,13 @@ public class PayloadGenerator {
 	 * This method tries to send all so far collected and serialized data.
 	 * </p>
 	 *
-	 * @param provider Provider for getting an {@link HTTPClient} required to send the data.
+	 * @param provider Provider for getting an {@link HTTPConnector} required to send the data.
 	 *
 	 * @return Returns the last status response retrieved from the server side, or {@code null} if an error occurred.
 	 */
 	public StatusResponse send() {
-
-		// TODO introduce connector
-
 		synchronized (this) {
-			// TODO send
+			configuration.getConnector().sendBeaconRequest(null, payload);
 			payload.clearActions();
 		}
 

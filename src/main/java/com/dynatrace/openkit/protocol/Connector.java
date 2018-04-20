@@ -3,20 +3,26 @@ package com.dynatrace.openkit.protocol;
 import com.dynatrace.openkit.protocol.dto.Payload;
 
 public interface Connector {
-    /**
-     * Initialise the connector
-     */
-    void init();
+	/**
+	 * sends a status check request and returns a status response
+	 *
+	 * @return
+	 */
+	public StatusResponse sendStatusRequest();
 
-    /**
-     * Send the data on the given Connector
-     * @param data payload to send
-     */
-    void send(Payload data);
+	/**
+	 * sends a beacon send request and returns a status response
+	 *
+	 * @param clientIPAddress
+	 * @param payload
+	 * @return
+	 */
+	public StatusResponse sendBeaconRequest(String clientIPAddress, Payload payload);
 
-    /**
-     * Returns the application id
-     * @return application id
-     */
-    String getApplicationID();
+	/**
+	 * sends a time sync request and returns a time sync response
+	 *
+	 * @return
+	 */
+	public TimeSyncResponse sendTimeSyncRequest();
 }

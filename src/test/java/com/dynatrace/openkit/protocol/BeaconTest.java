@@ -32,7 +32,6 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -604,7 +603,7 @@ public class BeaconTest {
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
                 new NullTimeProvider(), mock(HTTPClientProvider.class));
         HTTPClientProvider httpClientProvider = mock(HTTPClientProvider.class);
-        HTTPClient mockClient = mock(HTTPClient.class);
+        HTTPConnector mockClient = mock(HTTPConnector.class);
         when(httpClientProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(mockClient);
 
         // when
@@ -619,7 +618,7 @@ public class BeaconTest {
         // given
         String ipAddr = "127.0.0.1";
         HTTPClientProvider httpClientProvider = mock(HTTPClientProvider.class);
-		HTTPClient httpClient = mock(HTTPClient.class);
+		HTTPConnector httpClient = mock(HTTPConnector.class);
 		int responseCode = 200;
 		when(httpClient.sendBeaconRequest(any(String.class), any(byte[].class)))
                 .thenReturn(new StatusResponse("", responseCode));
@@ -642,7 +641,7 @@ public class BeaconTest {
         // given
         String ipAddr = "127.0.0.1";
         HTTPClientProvider httpClientProvider = mock(HTTPClientProvider.class);
-		HTTPClient httpClient = mock(HTTPClient.class);
+		HTTPConnector httpClient = mock(HTTPConnector.class);
 		int responseCode = 418;
 		when(httpClient.sendBeaconRequest(any(String.class), any(byte[].class)))
                 .thenReturn(new StatusResponse("", responseCode));

@@ -167,7 +167,7 @@ public class Configuration {
     }
 
     public String getApplicationID(){
-        return connector.getApplicationID();
+        return null;
     }
 
     public String getDeviceID() {

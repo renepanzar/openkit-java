@@ -18,6 +18,7 @@ package com.dynatrace.openkit.core;
 
 import com.dynatrace.openkit.core.communication.BeaconSendingContext;
 import com.dynatrace.openkit.core.configuration.Configuration;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
@@ -52,7 +53,7 @@ public class BeaconSender {
      * </p>
      *
      * @param configuration  OpenKit configuration.
-     * @param clientProvider Used for retrieving an {@link com.dynatrace.openkit.protocol.HTTPClient} instance.
+     * @param clientProvider Used for retrieving an {@link HTTPConnector} instance.
      * @param timingProvider Used for some timing related things.
      */
     public BeaconSender(Configuration configuration, HTTPClientProvider clientProvider, TimingProvider timingProvider) {

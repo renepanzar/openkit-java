@@ -16,12 +16,14 @@
 
 package com.dynatrace.openkit.test;
 
+import static org.mockito.Mockito.mock;
+
 import com.dynatrace.openkit.core.Device;
 import com.dynatrace.openkit.core.configuration.BeaconCacheConfiguration;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.OpenKitType;
 import com.dynatrace.openkit.core.util.DefaultLogger;
-import com.dynatrace.openkit.protocol.HTTPConnector;
+import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.protocol.JsonSerializer;
 import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
 import com.dynatrace.openkit.test.providers.TestSessionIDProvider;
@@ -84,7 +86,7 @@ public class OpenKitTestFactory {
             testConfiguration.getDevice(),
             testConfiguration.getApplicationVersion(),
             new BeaconCacheConfiguration(-1, -1, -1),
-            new HTTPConnector("", "", new JsonSerializer()));
+			mock(Connector.class));
     }
 
     private static Configuration getAppMonConfig(String applicationName, String deviceID) {
@@ -97,7 +99,7 @@ public class OpenKitTestFactory {
             new Device("", "", ""),
             "",
             new BeaconCacheConfiguration(-1, -1, -1),
-            new HTTPConnector("", "", new JsonSerializer()));
+			mock(Connector.class));
     }
 
     private static Configuration getDynatraceConfig(String applicationName, String deviceID) {
@@ -110,6 +112,6 @@ public class OpenKitTestFactory {
             new Device("", "", ""),
             "",
             new BeaconCacheConfiguration(-1, -1, -1),
-            new HTTPConnector("", "", new JsonSerializer()));
+			mock(Connector.class));
     }
 }
