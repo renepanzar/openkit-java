@@ -1,5 +1,7 @@
 package com.dynatrace.openkit.protocol;
 
+import com.dynatrace.openkit.protocol.dto.Payload;
+
 public class HTTPConnector implements Connector {
 
     private Serializer serializer;
