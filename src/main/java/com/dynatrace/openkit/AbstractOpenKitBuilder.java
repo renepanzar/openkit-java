@@ -24,6 +24,7 @@ import com.dynatrace.openkit.core.OpenKitImpl;
 import com.dynatrace.openkit.core.configuration.BeaconCacheConfiguration;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.util.DefaultLogger;
+import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
 
 /**
@@ -46,6 +47,8 @@ public abstract class AbstractOpenKitBuilder {
     private long beaconCacheMaxRecordAge = BeaconCacheConfiguration.DEFAULT_MAX_RECORD_AGE_IN_MILLIS;
     private long beaconCacheLowerMemoryBoundary = BeaconCacheConfiguration.DEFAULT_LOWER_MEMORY_BOUNDARY_IN_BYTES;
     private long beaconCacheUpperMemoryBoundary = BeaconCacheConfiguration.DEFAULT_UPPER_MEMORY_BOUNDARY_IN_BYTES;
+
+    private Connector connector;
 
     /**
      * Creates a new instance of type AbstractOpenKitBuilder
@@ -191,6 +194,16 @@ public abstract class AbstractOpenKitBuilder {
     }
 
     /**
+     * Sets the connector used for the communication
+     * @param connector Connector to use
+     * @return {@code this}
+     */
+    public AbstractOpenKitBuilder withConnector(Connector connector){
+        this.connector = connector;
+        return this;
+    }
+
+    /**
      * Builds the configuration for the OpenKit instance
      *
      * @return
@@ -258,5 +271,9 @@ public abstract class AbstractOpenKitBuilder {
         }
 
         return new DefaultLogger(verbose);
+    }
+
+    Connector getConnector(){
+            return connector;
     }
 }
