@@ -399,7 +399,7 @@ public class SessionImplTest {
 		final StatusResponse statusResponse = new StatusResponse("", 200);
 		when(httpClient.sendBeaconRequest(isA(String.class), any(byte[].class))).thenReturn(statusResponse);
 		final ConnectorProvider clientProvider = mock(ConnectorProvider.class);
-		when(clientProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
+		when(clientProvider.createConnector(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
 
     	final Beacon beacon = createBeacon(clientProvider);
 

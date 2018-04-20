@@ -483,7 +483,7 @@ public class Beacon {
      */
     public StatusResponse send() {
 
-		HTTPConnector httpClient = (HTTPConnector)connectorProvider.createClient(httpConfiguration);
+		HTTPConnector httpClient = (HTTPConnector)connectorProvider.createConnector(httpConfiguration);
         StatusResponse response = null;
 
         while (true) {

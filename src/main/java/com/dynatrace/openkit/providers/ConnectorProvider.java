@@ -28,5 +28,5 @@ public interface ConnectorProvider {
     /**
      * Returns an HTTPConnector based on the provided configuration.
      */
-    Connector createClient(HTTPClientConfiguration configuration);
+    Connector createConnector(Object configuration);
 }

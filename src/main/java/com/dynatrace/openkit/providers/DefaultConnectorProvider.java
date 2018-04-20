@@ -32,8 +32,8 @@ public class DefaultConnectorProvider implements ConnectorProvider {
     }
 
     @Override
-    public HTTPConnector createClient(HTTPClientConfiguration configuration) {
-        return new HTTPConnector(logger, configuration);
+    public HTTPConnector createConnector(Object configuration) {
+        return new HTTPConnector(logger, (HTTPClientConfiguration)configuration);
     }
 
 }

@@ -604,7 +604,7 @@ public class BeaconTest {
                 new NullTimeProvider(), mock(ConnectorProvider.class));
         ConnectorProvider connectorProvider = mock(ConnectorProvider.class);
         HTTPConnector mockClient = mock(HTTPConnector.class);
-        when(connectorProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(mockClient);
+        when(connectorProvider.createConnector(any(HTTPClientConfiguration.class))).thenReturn(mockClient);
 
         // when
         StatusResponse response = beacon.send();
@@ -622,7 +622,7 @@ public class BeaconTest {
 		int responseCode = 200;
 		when(httpClient.sendBeaconRequest(any(String.class), any(byte[].class)))
                 .thenReturn(new StatusResponse("", responseCode));
-		when(connectorProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
+		when(connectorProvider.createConnector(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
 		Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, ipAddr, threadIDProvider,
 				new NullTimeProvider(), connectorProvider);
 
@@ -645,7 +645,7 @@ public class BeaconTest {
 		int responseCode = 418;
 		when(httpClient.sendBeaconRequest(any(String.class), any(byte[].class)))
                 .thenReturn(new StatusResponse("", responseCode));
-		when(connectorProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
+		when(connectorProvider.createConnector(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
 		Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, ipAddr, threadIDProvider,
 				new NullTimeProvider(), connectorProvider);
 

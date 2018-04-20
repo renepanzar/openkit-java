@@ -41,7 +41,9 @@ public class TestConnectorProvider implements ConnectorProvider {
     }
 
     @Override
-    public HTTPConnector createClient(HTTPClientConfiguration configuration) {
+    public HTTPConnector createConnector(Object config) {
+		HTTPClientConfiguration configuration = (HTTPClientConfiguration) config;
+
         if (testHTTPClient != null) {
             previouslySentRequests.addAll(testHTTPClient.getSentRequests());
         }

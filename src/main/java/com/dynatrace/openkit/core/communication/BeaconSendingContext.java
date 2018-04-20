@@ -288,7 +288,7 @@ public class BeaconSendingContext {
      * @return HTTP client received from {@link ConnectorProvider}.
      */
     Connector getConnector() {
-        return connectorProvider.createClient(configuration.getHttpClientConfig());
+        return connectorProvider.createConnector(configuration.getHttpClientConfig());
     }
 
     /**

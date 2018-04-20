@@ -309,7 +309,7 @@ public class BeaconSendingContextTest {
         HTTPClientConfiguration mockConfiguration = mock(HTTPClientConfiguration.class);
 
         when(configuration.getHttpClientConfig()).thenReturn(mockConfiguration);
-        when(connectorProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(mockClient);
+        when(connectorProvider.createConnector(any(HTTPClientConfiguration.class))).thenReturn(mockClient);
 
         BeaconSendingContext target = new BeaconSendingContext(configuration, connectorProvider, timingProvider);
 
@@ -321,7 +321,7 @@ public class BeaconSendingContextTest {
         assertThat(obtained, is(sameInstance(mockClient)));
 
         verify(configuration, times(1)).getHttpClientConfig();
-        verify(connectorProvider, times(1)).createClient(mockConfiguration);
+        verify(connectorProvider, times(1)).createConnector(mockConfiguration);
         verifyNoMoreInteractions(configuration, connectorProvider);
         verifyZeroInteractions(mockClient, mockConfiguration);
     }
