@@ -120,8 +120,8 @@ public class SessionImpl implements Session {
     // *** public methods ***
 
     // sends the current Beacon state
-    public StatusResponse sendBeacon(HTTPClientProvider clientProvider) {
-        return beacon.send(clientProvider);
+    public StatusResponse sendBeacon() {
+        return beacon.send();
     }
 
     // *** getter methods ***

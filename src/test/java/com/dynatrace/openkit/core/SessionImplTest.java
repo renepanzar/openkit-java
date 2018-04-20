@@ -42,6 +42,8 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.*;
 
+import sun.net.www.http.HttpClient;
+
 /**
  * Tests the session implementation having some knowledge of the internals of beacon and beacon cache.
  */
@@ -56,23 +58,28 @@ public class SessionImplTest {
 
     @Before
     public void setUp() {
-        logger = mock(Logger.class);
-        when(logger.isInfoEnabled()).thenReturn(true);
-        when(logger.isDebugEnabled()).thenReturn(true);
-        beaconSender = mock(BeaconSender.class);
-        final BeaconCacheImpl beaconCache = new BeaconCacheImpl();
-        final Configuration configuration = mock(Configuration.class);
-        when(configuration.getApplicationID()).thenReturn(APP_ID);
-        when(configuration.getApplicationName()).thenReturn(APP_NAME);
-        when(configuration.getDevice()).thenReturn(new Device("", "", ""));
-        when(configuration.isCapture()).thenReturn(true);
-        when(configuration.getMaxBeaconSize()).thenReturn(30 * 1024); // 30kB=default size
-        final String clientIPAddress = "127.0.0.1";
-        final ThreadIDProvider threadIDProvider = mock(ThreadIDProvider.class);
-        final TimingProvider timingProvider = mock(TimingProvider.class);
-        when(timingProvider.provideTimestampInMilliseconds()).thenReturn(System.currentTimeMillis());
-        beacon = new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider);
+        beacon = createBeacon(null);
     }
+
+    private Beacon createBeacon(HTTPClientProvider provider) {
+		logger = mock(Logger.class);
+		when(logger.isInfoEnabled()).thenReturn(true);
+		when(logger.isDebugEnabled()).thenReturn(true);
+		beaconSender = mock(BeaconSender.class);
+		final BeaconCacheImpl beaconCache = new BeaconCacheImpl();
+		final Configuration configuration = mock(Configuration.class);
+		when(configuration.getApplicationID()).thenReturn(APP_ID);
+		when(configuration.getApplicationName()).thenReturn(APP_NAME);
+		when(configuration.getDevice()).thenReturn(new Device("", "", ""));
+		when(configuration.isCapture()).thenReturn(true);
+		when(configuration.getMaxBeaconSize()).thenReturn(30 * 1024); // 30kB=default size
+		final String clientIPAddress = "127.0.0.1";
+		final ThreadIDProvider threadIDProvider = mock(ThreadIDProvider.class);
+		final TimingProvider timingProvider = mock(TimingProvider.class);
+		final HTTPClientProvider clientProvider = provider == null ? mock(HTTPClientProvider.class) : provider;
+		when(timingProvider.provideTimestampInMilliseconds()).thenReturn(System.currentTimeMillis());
+		return new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider, clientProvider);
+	}
 
     @Test
     public void constructor() {
@@ -389,6 +396,15 @@ public class SessionImplTest {
 
     @Test
     public void endSessionWithOpenRootActions() {
+		// mock a valid status response via the HTTPClient to be sure the beacon cache is empty
+		final HTTPClient httpClient = mock(HTTPClient.class);
+		final StatusResponse statusResponse = new StatusResponse("", 200);
+		when(httpClient.sendBeaconRequest(isA(String.class), any(byte[].class))).thenReturn(statusResponse);
+		final HTTPClientProvider clientProvider = mock(HTTPClientProvider.class);
+		when(clientProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
+
+    	final Beacon beacon = createBeacon(clientProvider);
+
         // create test environment
         final SessionImpl session = new SessionImpl(logger, beaconSender, beacon);
 
@@ -397,14 +413,9 @@ public class SessionImplTest {
         session.enterAction("Some action 2");
         session.end();
 
-        // mock a valid status response via the HTTPClient to be sure the beacon cache is empty
-        final HTTPClient httpClient = mock(HTTPClient.class);
-        final StatusResponse statusResponse = new StatusResponse("", 200);
-        when(httpClient.sendBeaconRequest(isA(String.class), any(byte[].class))).thenReturn(statusResponse);
-        final HTTPClientProvider clientProvider = mock(HTTPClientProvider.class);
-        when(clientProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
 
-        session.sendBeacon(clientProvider);
+
+        session.sendBeacon();
         // verify that the actions if the action is still active, it is not in the beacon cache (thus cache is empty)
         assertThat(session.isEmpty(), is(true));
     }
@@ -414,13 +425,12 @@ public class SessionImplTest {
         // create test environment
         final Beacon beacon = mock(Beacon.class);
         final SessionImpl session = new SessionImpl(logger, beaconSender, beacon);
-        final HTTPClientProvider clientProvider = mock(HTTPClientProvider.class);
 
-        session.sendBeacon(clientProvider);
+        session.sendBeacon();
 
         // verify the proper methods being called
         verify(beaconSender, times(1)).startSession(session);
-        verify(beacon, times(1)).send(clientProvider);
+        verify(beacon, times(1)).send();
     }
 
     @Test

@@ -52,6 +52,8 @@ public class OpenKitImpl implements OpenKit {
 
     private final AtomicBoolean isShutdown = new AtomicBoolean(false);
 
+    private final HTTPClientProvider httpClientProvider;
+
     // *** constructors ***
 
     public OpenKitImpl(Logger logger, Configuration config) {
@@ -63,6 +65,7 @@ public class OpenKitImpl implements OpenKit {
         this.logger = logger;
         this.threadIDProvider = threadIDProvider;
         this.timingProvider = timingProvider;
+        this.httpClientProvider = httpClientProvider;
         beaconCache = new BeaconCacheImpl();
         beaconSender = new BeaconSender(configuration, httpClientProvider, timingProvider);
         beaconCacheEvictor = new BeaconCacheEvictor(logger, beaconCache, configuration.getBeaconCacheConfiguration(), timingProvider);
@@ -114,7 +117,7 @@ public class OpenKitImpl implements OpenKit {
             return NULL_SESSION;
         }
         // create beacon for session
-        Beacon beacon = new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider);
+        Beacon beacon = new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider, httpClientProvider);
         // create session
         return new SessionImpl(logger, beaconSender, beacon);
     }

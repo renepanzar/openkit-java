@@ -105,8 +105,9 @@ public class Beacon {
     private final TimingProvider timingProvider;
     private final ThreadIDProvider threadIDProvider;
     private final long sessionStartTime;
+	private final HTTPClientProvider httpClientProvider;
 
-    // client IP address
+	// client IP address
     private final String clientIPAddress;
 
     // basic beacon protocol data
@@ -134,7 +135,8 @@ public class Beacon {
      * @param threadIDProvider Provider for retrieving thread id.
      * @param timingProvider Provider for time related methods.
      */
-    public Beacon(Logger logger, BeaconCacheImpl beaconCache, Configuration configuration, String clientIPAddress, ThreadIDProvider threadIDProvider, TimingProvider timingProvider) {
+    public Beacon(Logger logger, BeaconCacheImpl beaconCache, Configuration configuration, String clientIPAddress,
+			ThreadIDProvider threadIDProvider, TimingProvider timingProvider, HTTPClientProvider httpClientProvider) {
         this.logger = logger;
         this.beaconCache = beaconCache;
         this.sessionNumber = configuration.createSessionNumber();
@@ -143,8 +145,9 @@ public class Beacon {
         this.configuration = configuration;
         this.threadIDProvider = threadIDProvider;
         this.sessionStartTime = timingProvider.provideTimestampInMilliseconds();
+		this.httpClientProvider = httpClientProvider;
 
-        if (InetAddressValidator.isValidIP(clientIPAddress)) {
+		if (InetAddressValidator.isValidIP(clientIPAddress)) {
             this.clientIPAddress = clientIPAddress;
         } else {
             this.clientIPAddress = "";
@@ -478,9 +481,9 @@ public class Beacon {
      *
      * @return Returns the last status response retrieved from the server side, or {@code null} if an error occurred.
      */
-    public StatusResponse send(HTTPClientProvider provider) {
+    public StatusResponse send() {
 
-        HTTPClient httpClient = provider.createClient(httpConfiguration);
+        HTTPClient httpClient = httpClientProvider.createClient(httpConfiguration);
         StatusResponse response = null;
 
         while (true) {
