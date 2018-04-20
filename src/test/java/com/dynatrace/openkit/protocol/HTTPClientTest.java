@@ -18,7 +18,7 @@ package com.dynatrace.openkit.protocol;
 
 import com.dynatrace.openkit.api.Logger;
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
-import com.dynatrace.openkit.protocol.HTTPClient.RequestType;
+import com.dynatrace.openkit.protocol.HTTPClientImpl.RequestType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class HTTPClientTest {
 
     @Test
     public void constructor() {
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
 
         // verify
         assertThat(client.getServerID(), is(SERVER_ID));
@@ -67,7 +67,7 @@ public class HTTPClientTest {
     @Test
     public void canHandleNullPointerExceptionWhenSendRequest() {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
 
         // when
         Response response = client.sendRequest(null, "", null, null, null);
@@ -80,7 +80,7 @@ public class HTTPClientTest {
     public void canHandleMalformedURLExceptionWhenSendRequest() {
         // given
         when(configuration.getBaseURL()).thenReturn("This is not a valid URL");
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
 
         // when
         Response response = client.sendStatusRequest();
@@ -92,7 +92,7 @@ public class HTTPClientTest {
     @Test
     public void sendStatusRequestToSomeValidUrl() {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
 
         // when
         StatusResponse response = client.sendStatusRequest();
@@ -104,7 +104,7 @@ public class HTTPClientTest {
     @Test
     public void sendBeaconRequestToSomeValidUrl() {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
 
         // when
         StatusResponse response = client.sendBeaconRequest("127.0.0.1", null);
@@ -116,7 +116,7 @@ public class HTTPClientTest {
     @Test
     public void sendTimesyncRequestToSomeValidUrl() {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
 
         // when
         TimeSyncResponse response = client.sendTimeSyncRequest();
@@ -128,7 +128,7 @@ public class HTTPClientTest {
     @Test
     public void sendStatusRequestAndReadErrorResponse() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getResponseCode()).thenReturn(418);
         InputStream is = new ByteArrayInputStream("err".getBytes(CHARSET));
@@ -144,7 +144,7 @@ public class HTTPClientTest {
     @Test
     public void sendStatusRequestAndReadStatusResponse() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=m".getBytes(CHARSET));
@@ -161,7 +161,7 @@ public class HTTPClientTest {
     @Test
     public void sendBeaconRequestAndReadStatusResponse() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=m".getBytes(CHARSET));
@@ -177,7 +177,7 @@ public class HTTPClientTest {
     @Test
     public void sendBeaconRequestWithGzippedDataAndReadStatusResponse() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=m".getBytes(CHARSET));
@@ -215,7 +215,7 @@ public class HTTPClientTest {
     @Test
     public void sendTimesyncRequestAndReadStatusResponse() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=mts".getBytes(CHARSET));
@@ -231,7 +231,7 @@ public class HTTPClientTest {
     @Test
     public void sendTimesyncRequestWithHttps() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpsURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=mts".getBytes(CHARSET));
@@ -250,7 +250,7 @@ public class HTTPClientTest {
     @Test
     public void sendRequestWithRetrySucces() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=m".getBytes(CHARSET));
@@ -276,7 +276,7 @@ public class HTTPClientTest {
     @Test
     public void sendRequestWithRetryFail() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=m".getBytes(CHARSET));
@@ -294,7 +294,7 @@ public class HTTPClientTest {
     @Test
     public void sendTimesyncRequestWithMobileResponse() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpsURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=m".getBytes(CHARSET));
@@ -310,7 +310,7 @@ public class HTTPClientTest {
     @Test
     public void sendStatusRequestWithTimeSyncResponse() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpsURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=mts".getBytes(CHARSET));
@@ -326,7 +326,7 @@ public class HTTPClientTest {
     @Test
     public void sendBeaconRequestWithTimeSyncResponse() throws IOException {
         // given
-        HTTPClient client = new HTTPClient(logger, configuration);
+        HTTPClientImpl client = new HTTPClientImpl(logger, configuration);
         HttpURLConnection connection = mock(HttpURLConnection.class);
         when(connection.getResponseCode()).thenReturn(200);
         InputStream is = new ByteArrayInputStream("type=mts".getBytes(CHARSET));

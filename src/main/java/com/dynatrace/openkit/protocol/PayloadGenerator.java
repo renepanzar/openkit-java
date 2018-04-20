@@ -10,7 +10,6 @@ import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.protocol.dto.Action;
 import com.dynatrace.openkit.protocol.dto.Payload;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
@@ -263,7 +262,7 @@ public class PayloadGenerator {
 	 * This method tries to send all so far collected and serialized data.
 	 * </p>
 	 *
-	 * @param provider Provider for getting an {@link HTTPClient} required to send the data.
+	 * @param provider Provider for getting an {@link HTTPClientImpl} required to send the data.
 	 *
 	 * @return Returns the last status response retrieved from the server side, or {@code null} if an error occurred.
 	 */

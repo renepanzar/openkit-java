@@ -17,7 +17,7 @@
 package com.dynatrace.openkit.test;
 
 import com.dynatrace.openkit.api.OpenKitConstants;
-import com.dynatrace.openkit.protocol.HTTPClient.RequestType;
+import com.dynatrace.openkit.protocol.HTTPClientImpl.RequestType;
 import com.dynatrace.openkit.test.TestHTTPClient.Request;
 import org.junit.Assert;
 

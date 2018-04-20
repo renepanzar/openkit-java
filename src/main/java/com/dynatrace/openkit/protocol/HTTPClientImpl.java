@@ -42,7 +42,7 @@ import javax.net.ssl.X509TrustManager;
  * - beacon send
  * - time sync
  */
-public class HTTPClient {
+public class HTTPClientImpl {
 
     public enum RequestType {
 
@@ -95,7 +95,7 @@ public class HTTPClient {
 
     // *** constructors ***
 
-    public HTTPClient(Logger logger, HTTPClientConfiguration configuration) {
+    public HTTPClientImpl(Logger logger, HTTPClientConfiguration configuration) {
         this.logger = logger;
         serverID = configuration.getServerID();
         monitorURL = buildMonitorURL(configuration.getBaseURL(), configuration.getApplicationID(), serverID);
@@ -140,7 +140,7 @@ public class HTTPClient {
 
     // *** private methods ***
 
-    // only for unit testing the HTTPClient
+    // only for unit testing the HTTPClientImpl
     Response sendRequest(RequestType requestType, HttpURLConnection connection, String clientIPAddress, byte[] data,
             String method) {
         try {

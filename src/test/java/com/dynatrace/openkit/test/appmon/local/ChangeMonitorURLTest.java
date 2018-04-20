@@ -16,7 +16,7 @@
 
 package com.dynatrace.openkit.test.appmon.local;
 
-import com.dynatrace.openkit.protocol.HTTPClient.RequestType;
+import com.dynatrace.openkit.protocol.HTTPClientImpl.RequestType;
 import com.dynatrace.openkit.test.TestHTTPClient.Request;
 import com.dynatrace.openkit.test.shared.ChangeMonitorURLTestShared;
 import org.junit.Assert;

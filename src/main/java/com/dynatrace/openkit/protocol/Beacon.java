@@ -477,13 +477,13 @@ public class Beacon {
      * This method tries to send all so far collected and serialized data.
      * </p>
      *
-     * @param provider Provider for getting an {@link HTTPClient} required to send the data.
+     * @param provider Provider for getting an {@link HTTPClientImpl} required to send the data.
      *
      * @return Returns the last status response retrieved from the server side, or {@code null} if an error occurred.
      */
     public StatusResponse send() {
 
-        HTTPClient httpClient = httpClientProvider.createClient(httpConfiguration);
+        HTTPClientImpl httpClient = httpClientProvider.createClient(httpConfiguration);
         StatusResponse response = null;
 
         while (true) {
