@@ -48,6 +48,10 @@ public class StatusResponse extends Response {
         parseResponse(response);
     }
 
+    public StatusResponse(int responseCode) {
+    	super(responseCode);
+	}
+
     // *** private methods ***
 
     // parses status check response

@@ -3,11 +3,6 @@ package com.dynatrace.openkit.protocol;
 import com.dynatrace.openkit.protocol.dto.Payload;
 
 public interface Connector {
-    /**
-     * Initialise the connector
-     */
-    void init();
-
 	/**
 	 * sends a status check request and returns a status response
 	 *

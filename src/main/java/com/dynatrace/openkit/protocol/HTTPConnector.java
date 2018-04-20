@@ -109,13 +109,6 @@ public class HTTPConnector implements Connector {
 
     // *** public methods ***
 
-	@Override
-	public void init() {
-    	// TODO check if necessary
-
-		// do nothing
-	}
-
 	// sends a status check request and returns a status response
     public StatusResponse sendStatusRequest() {
         return (StatusResponse) sendRequest(RequestType.STATUS, monitorURL, null, null, "GET");

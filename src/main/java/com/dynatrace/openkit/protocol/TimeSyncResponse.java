@@ -38,6 +38,10 @@ public class TimeSyncResponse extends Response {
         parseResponse(response);
     }
 
+    public TimeSyncResponse(int responseCode) {
+    	super(responseCode);
+	}
+
     // *** private methods ***
 
     // parses time sync response
