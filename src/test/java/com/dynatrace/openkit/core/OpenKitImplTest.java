@@ -58,6 +58,7 @@ public class OpenKitImplTest {
         when(config.getApplicationName()).thenReturn(APP_NAME);
         when(config.getDevice()).thenReturn(new Device("", "", ""));
         when(config.isCapture()).thenReturn(true);
+        when(config.getDeviceID()).thenReturn("w42");
         final HTTPClientConfiguration httpClientConfig = mock(HTTPClientConfiguration.class);
         when(httpClientConfig.getBaseURL()).thenReturn("http://example.com/");
         when(httpClientConfig.getApplicationID()).thenReturn(APP_ID);

@@ -37,10 +37,8 @@ public class Configuration {
 
     // immutable settings
     private final String applicationName;
-    private final String applicationID;
     private final OpenKitType openKitType;
-    private final long deviceID;
-    private final String endpointURL;
+    private final String deviceID;
 
     // mutable settings
     private AtomicBoolean capture;                               // capture on/off; can be written/read by different threads -> atomic
@@ -63,7 +61,7 @@ public class Configuration {
 
     // *** constructors ***
 
-    public Configuration(OpenKitType openKitType, String applicationName, String applicationID, long deviceID, String endpointURL,
+    public Configuration(OpenKitType openKitType, String applicationName, String deviceID,
                          SessionIDProvider sessionIDProvider, SSLTrustManager trustManager, Device device, String applicationVersion,
                          BeaconCacheConfiguration beaconCacheConfiguration, Connector connector) {
 
@@ -71,9 +69,7 @@ public class Configuration {
 
         // immutable settings
         this.applicationName = applicationName;
-        this.applicationID = applicationID;
         this.deviceID = deviceID;
-        this.endpointURL = endpointURL;
 
         // mutable settings
         capture = new AtomicBoolean(DEFAULT_CAPTURE);
@@ -86,9 +82,9 @@ public class Configuration {
 
         httpClientConfiguration =
             new HTTPClientConfiguration(
-                endpointURL,
+                "",
                 openKitType.getDefaultServerID(),
-                applicationID,
+                "",
                 trustManager);
         this.connector = connector;
 
@@ -134,9 +130,9 @@ public class Configuration {
         // check if http config changed
         if (httpClientConfiguration.getServerID() != newServerID) {
             httpClientConfiguration = new HTTPClientConfiguration(
-                endpointURL,
+                "",
                 newServerID,
-                applicationID,
+                "",
                 httpClientConfiguration.getSSLTrustManager());
         }
 
@@ -170,11 +166,11 @@ public class Configuration {
         return applicationName;
     }
 
-    public String getApplicationID() {
-        return applicationID;
+    public String getApplicationID(){
+        return null;
     }
 
-    public long getDeviceID() {
+    public String getDeviceID() {
         return deviceID;
     }
 

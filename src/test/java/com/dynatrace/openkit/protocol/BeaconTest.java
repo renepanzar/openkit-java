@@ -41,7 +41,7 @@ public class BeaconTest {
     private static final String APP_NAME = "appName";
     private static final int ACTION_ID = 17;
     private static final int SERVER_ID = 123;
-    private static final long DEVICE_ID = 456;
+    private static final String DEVICE_ID = "456";
     private static final int THREAD_ID = 1234567;
 
     private Configuration configuration;

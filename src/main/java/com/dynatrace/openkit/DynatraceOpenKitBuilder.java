@@ -28,7 +28,6 @@ import com.dynatrace.openkit.providers.DefaultSessionIDProvider;
  */
 public class DynatraceOpenKitBuilder extends AbstractOpenKitBuilder {
 
-    private final String applicationID;
     private String applicationName = "";
 
     /**
@@ -38,9 +37,8 @@ public class DynatraceOpenKitBuilder extends AbstractOpenKitBuilder {
      * @param applicationID unique application id
      * @param deviceID      unique device id
      */
-    public DynatraceOpenKitBuilder(String endpointURL, String applicationID, long deviceID) {
-        super(endpointURL, deviceID);
-        this.applicationID = applicationID;
+    public DynatraceOpenKitBuilder(String deviceID) {
+        super( deviceID);
     }
 
     /**
@@ -67,9 +65,7 @@ public class DynatraceOpenKitBuilder extends AbstractOpenKitBuilder {
         return new Configuration(
             OpenKitType.DYNATRACE,
             applicationName,
-            applicationID,
             getDeviceID(),
-            getEndpointURL(),
             new DefaultSessionIDProvider(),
             getTrustManager(),
             device,
