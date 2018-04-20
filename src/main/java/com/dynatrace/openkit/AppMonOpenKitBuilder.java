@@ -20,6 +20,7 @@ import com.dynatrace.openkit.core.Device;
 import com.dynatrace.openkit.core.configuration.BeaconCacheConfiguration;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.OpenKitType;
+import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.providers.DefaultSessionIDProvider;
 
 /**
@@ -42,7 +43,7 @@ public class AppMonOpenKitBuilder extends AbstractOpenKitBuilder {
     }
 
     @Override
-    Configuration buildConfiguration() {
+    Configuration buildConfiguration(Connector connector) {
         Device device = new Device(getOperatingSystem(), getManufacturer(), getModelID());
 
         BeaconCacheConfiguration beaconCacheConfiguration = new BeaconCacheConfiguration(getBeaconCacheMaxRecordAge(),
@@ -58,6 +59,7 @@ public class AppMonOpenKitBuilder extends AbstractOpenKitBuilder {
             getTrustManager(),
             device,
             getApplicationVersion(),
-            beaconCacheConfiguration);
+            beaconCacheConfiguration,
+            connector);
     }
 }

@@ -17,6 +17,8 @@
 package com.dynatrace.openkit.core.configuration;
 
 import com.dynatrace.openkit.core.Device;
+import com.dynatrace.openkit.protocol.HTTPConnector;
+import com.dynatrace.openkit.protocol.JsonSerializer;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
 import com.dynatrace.openkit.test.providers.TestSessionIDProvider;
@@ -153,7 +155,8 @@ public class ConfigurationTest {
         private TestConfiguration(OpenKitType openKitType, String applicationName, String applicationID, long deviceID, String endpointURL, BeaconCacheConfiguration beaconCacheConfiguration) {
             super(openKitType, applicationName, applicationID, deviceID, endpointURL,
                 new TestSessionIDProvider(), new SSLStrictTrustManager(),
-                new Device("", "", ""), "", beaconCacheConfiguration);
+                new Device("", "", ""), "", beaconCacheConfiguration,
+                new HTTPConnector("", "", new JsonSerializer()));
         }
     }
 }

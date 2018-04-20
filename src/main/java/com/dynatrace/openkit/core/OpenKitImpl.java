@@ -23,6 +23,7 @@ import com.dynatrace.openkit.core.caching.BeaconCacheEvictor;
 import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.protocol.Beacon;
+import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.providers.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -54,6 +55,8 @@ public class OpenKitImpl implements OpenKit {
 
     private final HTTPClientProvider httpClientProvider;
 
+    private final Connector connector;
+
     // *** constructors ***
 
     public OpenKitImpl(Logger logger, Configuration config) {
@@ -69,6 +72,7 @@ public class OpenKitImpl implements OpenKit {
         beaconCache = new BeaconCacheImpl();
         beaconSender = new BeaconSender(configuration, httpClientProvider, timingProvider);
         beaconCacheEvictor = new BeaconCacheEvictor(logger, beaconCache, configuration.getBeaconCacheConfiguration(), timingProvider);
+        connector = configuration.getConnector();
     }
 
     /**
@@ -85,7 +89,6 @@ public class OpenKitImpl implements OpenKit {
     }
 
     // *** OpenKit interface methods ***
-
 
     @Override
     public void close() {

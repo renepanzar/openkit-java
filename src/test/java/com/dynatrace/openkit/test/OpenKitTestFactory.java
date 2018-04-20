@@ -21,6 +21,8 @@ import com.dynatrace.openkit.core.configuration.BeaconCacheConfiguration;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.OpenKitType;
 import com.dynatrace.openkit.core.util.DefaultLogger;
+import com.dynatrace.openkit.protocol.HTTPConnector;
+import com.dynatrace.openkit.protocol.JsonSerializer;
 import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
 import com.dynatrace.openkit.test.providers.TestSessionIDProvider;
 
@@ -83,7 +85,8 @@ public class OpenKitTestFactory {
             new SSLStrictTrustManager(),
             testConfiguration.getDevice(),
             testConfiguration.getApplicationVersion(),
-            new BeaconCacheConfiguration(-1, -1, -1));
+            new BeaconCacheConfiguration(-1, -1, -1),
+            new HTTPConnector("", "", new JsonSerializer()));
     }
 
     private static Configuration getAppMonConfig(String applicationName, String endpointURL, long deviceID) {
@@ -97,7 +100,8 @@ public class OpenKitTestFactory {
             new SSLStrictTrustManager(),
             new Device("", "", ""),
             "",
-            new BeaconCacheConfiguration(-1, -1, -1));
+            new BeaconCacheConfiguration(-1, -1, -1),
+            new HTTPConnector("", "", new JsonSerializer()));
     }
 
     private static Configuration getDynatraceConfig(String applicationName, String applicationID, String endpointURL, long deviceID) {
@@ -111,6 +115,7 @@ public class OpenKitTestFactory {
             new SSLStrictTrustManager(),
             new Device("", "", ""),
             "",
-            new BeaconCacheConfiguration(-1, -1, -1));
+            new BeaconCacheConfiguration(-1, -1, -1),
+            new HTTPConnector("", "", new JsonSerializer()));
     }
 }
