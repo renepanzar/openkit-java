@@ -22,6 +22,8 @@ import com.dynatrace.openkit.api.SSLTrustManager;
 import com.dynatrace.openkit.core.configuration.BeaconCacheConfiguration;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.util.DefaultLogger;
+import com.dynatrace.openkit.protocol.HTTPConnector;
+import com.dynatrace.openkit.protocol.JsonSerializer;
 import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -42,12 +44,12 @@ public class OpenKitBuilderTest {
 
     @Test
     public void defaultsAreSetForAppMon() {
-        verifyDefaultsAreSet(new AppMonOpenKitBuilder(endpoint, appID, deviceID).buildConfiguration());
+        verifyDefaultsAreSet(new AppMonOpenKitBuilder(endpoint, appID, deviceID).buildConfiguration( new HTTPConnector("", "", new JsonSerializer())));
     }
 
     @Test
     public void defaultsAreSetForDynatrace() {
-        verifyDefaultsAreSet(new DynatraceOpenKitBuilder(endpoint, appName, deviceID).buildConfiguration());
+        verifyDefaultsAreSet(new DynatraceOpenKitBuilder(endpoint, appName, deviceID).buildConfiguration( new HTTPConnector("", "", new JsonSerializer())));
     }
 
     private void verifyDefaultsAreSet(Configuration configuration) {
@@ -71,7 +73,7 @@ public class OpenKitBuilderTest {
 
     @Test
     public void applicationNameIsSetCorrectlyForAppMon() {
-        Configuration target = new AppMonOpenKitBuilder(endpoint, appName, deviceID).buildConfiguration();
+        Configuration target = new AppMonOpenKitBuilder(endpoint, appName, deviceID).buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getApplicationName(), is(equalTo(appName)));
         assertThat(target.getApplicationName(), is(equalTo(target.getApplicationID())));
@@ -83,7 +85,7 @@ public class OpenKitBuilderTest {
 
         Configuration target = new AppMonOpenKitBuilder(endpoint, appName, deviceID)
             .withTrustManager(trustManager)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getHttpClientConfig().getSSLTrustManager(), is(sameInstance(trustManager)));
     }
@@ -94,7 +96,7 @@ public class OpenKitBuilderTest {
 
         Configuration target = new DynatraceOpenKitBuilder(endpoint, appID, deviceID)
             .withTrustManager(trustManager)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getHttpClientConfig().getSSLTrustManager(), is(sameInstance(trustManager)));
     }
@@ -103,7 +105,7 @@ public class OpenKitBuilderTest {
     public void canSetApplicationVersionForAppMon() {
         Configuration target = new AppMonOpenKitBuilder(endpoint, appName, deviceID)
             .withApplicationVersion(appVersion)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getApplicationVersion(), is(equalTo(appVersion)));
     }
@@ -112,7 +114,7 @@ public class OpenKitBuilderTest {
     public void canSetApplicationVersionForDynatrace() {
         Configuration target = new DynatraceOpenKitBuilder(endpoint, appID, deviceID)
             .withApplicationVersion(appVersion)
-            .buildConfiguration();
+            .buildConfiguration(new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getApplicationVersion(), is(equalTo(appVersion)));
     }
@@ -121,7 +123,7 @@ public class OpenKitBuilderTest {
     public void canSetOperatingSystemForAppMon() {
         Configuration target = new AppMonOpenKitBuilder(endpoint, appName, deviceID)
             .withOperatingSystem(os)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getDevice().getOperatingSystem(), is(equalTo(os)));
     }
@@ -130,7 +132,7 @@ public class OpenKitBuilderTest {
     public void canSetOperatingSystemForDynatrace() {
         Configuration target = new DynatraceOpenKitBuilder(endpoint, appID, deviceID)
             .withOperatingSystem(os)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getDevice().getOperatingSystem(), is(equalTo(os)));
     }
@@ -139,7 +141,7 @@ public class OpenKitBuilderTest {
     public void canSetManufacturerForAppMon() {
         Configuration target = new AppMonOpenKitBuilder(endpoint, appName, deviceID)
             .withManufacturer(manufacturer)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getDevice().getManufacturer(), is(equalTo(manufacturer)));
     }
@@ -148,7 +150,7 @@ public class OpenKitBuilderTest {
     public void canSetManufactureForDynatrace() {
         Configuration target = new DynatraceOpenKitBuilder(endpoint, appID, deviceID)
             .withManufacturer(manufacturer)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getDevice().getManufacturer(), is(equalTo(manufacturer)));
     }
@@ -157,7 +159,7 @@ public class OpenKitBuilderTest {
     public void canSetModelIDForAppMon() {
         Configuration target = new AppMonOpenKitBuilder(endpoint, appName, deviceID)
             .withModelID(modelID)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getDevice().getModelID(), is(equalTo(modelID)));
     }
@@ -166,7 +168,7 @@ public class OpenKitBuilderTest {
     public void canSetModelIDForDynatrace() {
         Configuration target = new DynatraceOpenKitBuilder(endpoint, appID, deviceID)
             .withModelID(modelID)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getDevice().getModelID(), is(equalTo(modelID)));
     }
@@ -175,7 +177,7 @@ public class OpenKitBuilderTest {
     public void canSetAppNameForDynatrace() {
         Configuration target = new DynatraceOpenKitBuilder(endpoint, appID, deviceID)
             .withApplicationName(appName)
-            .buildConfiguration();
+            .buildConfiguration( new HTTPConnector("", "", new JsonSerializer()));
 
         assertThat(target.getApplicationName(), is(equalTo(appName)));
     }

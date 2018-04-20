@@ -14,7 +14,7 @@ public class HTTPConnector implements Connector {
      * @param endpointURL endpoint url to connect to
      * @param serializer serializer to use for the HTTPConnector
      */
-    HTTPConnector(String applicationID, String endpointURL, Serializer serializer){
+    public HTTPConnector(String applicationID, String endpointURL, Serializer serializer){
         this.serializer = serializer;
         this.applicationID = applicationID;
         this.endpointURL = endpointURL;
