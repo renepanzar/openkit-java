@@ -13,4 +13,10 @@ public interface Connector {
      * @param data payload to send
      */
     void send(Payload data);
+
+    /**
+     * Returns the application id
+     * @return application id
+     */
+    String getApplicationID();
 }

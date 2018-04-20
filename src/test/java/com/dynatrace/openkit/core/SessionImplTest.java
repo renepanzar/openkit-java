@@ -66,6 +66,7 @@ public class SessionImplTest {
         when(configuration.getApplicationName()).thenReturn(APP_NAME);
         when(configuration.getDevice()).thenReturn(new Device("", "", ""));
         when(configuration.isCapture()).thenReturn(true);
+        when(configuration.getDeviceID()).thenReturn("w42");
         when(configuration.getMaxBeaconSize()).thenReturn(30 * 1024); // 30kB=default size
         final String clientIPAddress = "127.0.0.1";
         final ThreadIDProvider threadIDProvider = mock(ThreadIDProvider.class);

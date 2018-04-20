@@ -33,8 +33,7 @@ import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
 public abstract class AbstractOpenKitBuilder {
 
     // immutable fields
-    private final String endpointURL;
-    private final long deviceID;
+    private final String deviceID;
 
     // mutable fields
     private Logger logger;
@@ -53,11 +52,9 @@ public abstract class AbstractOpenKitBuilder {
     /**
      * Creates a new instance of type AbstractOpenKitBuilder
      *
-     * @param endpointURL endpoint OpenKit connects to
      * @param deviceID    unique device id
      */
-    AbstractOpenKitBuilder(String endpointURL, long deviceID) {
-        this.endpointURL = endpointURL;
+    AbstractOpenKitBuilder( String deviceID) {
         this.deviceID = deviceID;
     }
 
@@ -241,11 +238,7 @@ public abstract class AbstractOpenKitBuilder {
         return modelID;
     }
 
-    String getEndpointURL() {
-        return endpointURL;
-    }
-
-    long getDeviceID() {
+    String getDeviceID() {
         return deviceID;
     }
 

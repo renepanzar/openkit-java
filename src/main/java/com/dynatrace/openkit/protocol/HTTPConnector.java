@@ -20,6 +20,10 @@ public class HTTPConnector implements Connector {
         this.endpointURL = endpointURL;
     }
 
+    public String getApplicationID(){
+        return applicationID;
+    }
+
     @Override
     public void init() {
 

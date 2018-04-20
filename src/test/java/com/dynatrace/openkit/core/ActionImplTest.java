@@ -905,6 +905,7 @@ public class ActionImplTest {
         when(configuration.getApplicationName()).thenReturn("appName");
         when(configuration.getDevice()).thenReturn(new Device("", "", ""));
         when(configuration.isCapture()).thenReturn(true);
+        when(configuration.getDeviceID()).thenReturn("w42");
         final String clientIPAddress = "127.0.0.1";
         final ThreadIDProvider threadIDProvider = mock(ThreadIDProvider.class);
         final TimingProvider timingProvider = mock(TimingProvider.class);

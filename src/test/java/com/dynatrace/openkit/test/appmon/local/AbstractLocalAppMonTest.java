@@ -30,14 +30,14 @@ public abstract class AbstractLocalAppMonTest extends AbstractAppMonTest {
 
     public AbstractLocalAppMonTest() {
         testConfiguration = new TestConfiguration();
-        testConfiguration.setDeviceID(new Random(System.currentTimeMillis()).nextLong());
+        testConfiguration.setDeviceID("w42");
         testConfiguration.setStatusResponse("type=m&si=120&bn=dynaTraceMonitor&id=1", 200);
         testConfiguration.setTimeSyncResponse("type=mts&t1=-1&t2=-1", 200);
     }
 
     @Before
     public void setUp() throws InterruptedException {
-        openKitTestImpl = OpenKitTestFactory.createAppMonLocalInstance(TEST_APPLICATION_NAME, TEST_ENDPOINT, testConfiguration);
+        openKitTestImpl = OpenKitTestFactory.createAppMonLocalInstance(TEST_APPLICATION_NAME, testConfiguration);
         openKit = openKitTestImpl;
         openKit.waitForInitCompletion();
     }

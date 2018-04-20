@@ -37,8 +37,8 @@ public class AppMonOpenKitBuilder extends AbstractOpenKitBuilder {
      * @param applicationName unique application id
      * @param deviceID        unique device id
      */
-    public AppMonOpenKitBuilder(String endpointURL, String applicationName, long deviceID) {
-        super(endpointURL, deviceID);
+    public AppMonOpenKitBuilder(String applicationName, String deviceID) {
+        super(deviceID);
         this.applicationName = applicationName;
     }
 
@@ -52,9 +52,7 @@ public class AppMonOpenKitBuilder extends AbstractOpenKitBuilder {
         return new Configuration(
             OpenKitType.APPMON,
             applicationName,
-            applicationName,
             getDeviceID(),
-            getEndpointURL(),
             new DefaultSessionIDProvider(),
             getTrustManager(),
             device,

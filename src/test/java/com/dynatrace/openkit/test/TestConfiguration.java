@@ -21,7 +21,7 @@ import com.dynatrace.openkit.core.Device;
 
 public class TestConfiguration {
 
-    private long deviceID = -1;
+    private String deviceID = "w42";
     private String statusResponse = null;
     private int statusResponseCode = -1;
     private String timeSyncResponse = null;
@@ -35,7 +35,7 @@ public class TestConfiguration {
     // set default for version
     private String applicationVersion = OpenKitConstants.DEFAULT_APPLICATION_VERSION;
 
-    public void setDeviceID(long deviceID) {
+    public void setDeviceID(String deviceID) {
         this.deviceID = deviceID;
     }
 
@@ -57,7 +57,7 @@ public class TestConfiguration {
         this.applicationVersion = applicationVersion;
     }
 
-    public long getDeviceID() {
+    public String getDeviceID() {
         return deviceID;
     }
 
