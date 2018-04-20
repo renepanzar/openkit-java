@@ -17,7 +17,7 @@
 package com.dynatrace.openkit.core;
 
 import com.dynatrace.openkit.api.OpenKitConstants;
-import com.dynatrace.openkit.protocol.Beacon;
+import com.dynatrace.openkit.protocol.IPayloadGenerator;
 
 /**
  * Setting the Dynatrace tag to the {@link OpenKitConstants#WEBREQUEST_TAG_HEADER} HTTP header has to be done manually by the user.
@@ -28,8 +28,8 @@ public class WebRequestTracerStringURL extends WebRequestTracerBaseImpl {
     // *** constructors ***
 
     // creates web request tracer with a simple string URL
-    public WebRequestTracerStringURL(Beacon beacon, ActionImpl action, String url) {
-        super(beacon, action);
+    public WebRequestTracerStringURL(IPayloadGenerator payloadGenerator, ActionImpl action, String url) {
+        super(payloadGenerator, action);
 
         // separate query string from URL
         if (url != null) {

@@ -19,7 +19,7 @@ package com.dynatrace.openkit.core;
 import com.dynatrace.openkit.api.Action;
 import com.dynatrace.openkit.api.Logger;
 import com.dynatrace.openkit.api.RootAction;
-import com.dynatrace.openkit.protocol.Beacon;
+import com.dynatrace.openkit.protocol.IPayloadGenerator;
 
 /**
  * Actual implementation of the {@link RootAction} interface.
@@ -27,15 +27,15 @@ import com.dynatrace.openkit.protocol.Beacon;
 public class RootActionImpl extends ActionImpl implements RootAction {
 
     // Beacon reference
-    private final Beacon beacon;
+    private final IPayloadGenerator payloadGenerator;
     // data structures for managing child actions
     private SynchronizedQueue<Action> openChildActions = new SynchronizedQueue<Action>();
 
     // *** constructors ***
 
-    RootActionImpl(Logger logger, Beacon beacon, String name, SynchronizedQueue<Action> parentActions) {
-        super(logger, beacon, name, parentActions);
-        this.beacon = beacon;
+    RootActionImpl(Logger logger, IPayloadGenerator payloadGenerator, String name, SynchronizedQueue<Action> parentActions) {
+        super(logger, payloadGenerator, name, parentActions);
+        this.payloadGenerator = payloadGenerator;
     }
 
     // *** interface methods ***
@@ -47,7 +47,7 @@ public class RootActionImpl extends ActionImpl implements RootAction {
             return new NullAction(this);
         }
         if (!isActionLeft()) {
-            return new ActionImpl(getLogger(), beacon, actionName, this, openChildActions);
+            return new ActionImpl(getLogger(), payloadGenerator, actionName, this, openChildActions);
         }
 
         return new NullAction(this);

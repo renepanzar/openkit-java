@@ -24,6 +24,8 @@ import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.protocol.Beacon;
 import com.dynatrace.openkit.protocol.Connector;
+import com.dynatrace.openkit.protocol.IPayloadGenerator;
+import com.dynatrace.openkit.protocol.PayloadGenerator;
 import com.dynatrace.openkit.providers.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -120,8 +122,11 @@ public class OpenKitImpl implements OpenKit {
             return NULL_SESSION;
         }
         // create beacon for session
-        Beacon beacon = new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider,
-				connectorProvider);
+        //Beacon beacon = new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider,
+		//		connectorProvider);
+
+		IPayloadGenerator beacon = new PayloadGenerator(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider);
+
         // create session
         return new SessionImpl(logger, beaconSender, beacon);
     }

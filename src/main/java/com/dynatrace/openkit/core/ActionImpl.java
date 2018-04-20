@@ -19,7 +19,7 @@ package com.dynatrace.openkit.core;
 import com.dynatrace.openkit.api.Action;
 import com.dynatrace.openkit.api.Logger;
 import com.dynatrace.openkit.api.WebRequestTracer;
-import com.dynatrace.openkit.protocol.Beacon;
+import com.dynatrace.openkit.protocol.IPayloadGenerator;
 
 import java.net.URLConnection;
 import java.util.concurrent.atomic.AtomicLong;
@@ -46,25 +46,25 @@ public class ActionImpl implements Action {
     private int endSequenceNo = -1;
 
     // Beacon reference
-    private final Beacon beacon;
+    private final IPayloadGenerator payloadGenerator;
 
     private SynchronizedQueue<Action> thisLevelActions = null;
 
     // *** constructors ***
 
-    ActionImpl(Logger logger, Beacon beacon, String name, SynchronizedQueue<Action> thisLevelActions) {
-        this(logger, beacon, name, null, thisLevelActions);
+    ActionImpl(Logger logger, IPayloadGenerator payloadGenerator, String name, SynchronizedQueue<Action> thisLevelActions) {
+        this(logger, payloadGenerator, name, null, thisLevelActions);
     }
 
-    ActionImpl(Logger logger, Beacon beacon, String name, ActionImpl parentAction, SynchronizedQueue<Action> thisLevelActions) {
+    ActionImpl(Logger logger, IPayloadGenerator payloadGenerator, String name, ActionImpl parentAction, SynchronizedQueue<Action> thisLevelActions) {
         this.logger = logger;
 
-        this.beacon = beacon;
+        this.payloadGenerator = payloadGenerator;
         this.parentAction = parentAction;
 
-        this.startTime = beacon.getCurrentTimestamp();
-        this.startSequenceNo = beacon.createSequenceNumber();
-        this.id = beacon.createID();
+        this.startTime = payloadGenerator.getCurrentTimestamp();
+        this.startSequenceNo = payloadGenerator.createSequenceNumber();
+        this.id = payloadGenerator.createID();
         this.name = name;
 
         this.thisLevelActions = thisLevelActions;
@@ -86,7 +86,7 @@ public class ActionImpl implements Action {
             return this;
         }
         if (!isActionLeft()) {
-            beacon.reportEvent(this, eventName);
+            payloadGenerator.reportEvent(this, eventName);
         }
         return this;
     }
@@ -98,7 +98,7 @@ public class ActionImpl implements Action {
             return this;
         }
         if (!isActionLeft()) {
-            beacon.reportValue(this, valueName, value);
+            payloadGenerator.reportValue(this, valueName, value);
         }
         return this;
     }
@@ -110,7 +110,7 @@ public class ActionImpl implements Action {
             return this;
         }
         if (!isActionLeft()) {
-            beacon.reportValue(this, valueName, value);
+            payloadGenerator.reportValue(this, valueName, value);
         }
         return this;
     }
@@ -122,7 +122,7 @@ public class ActionImpl implements Action {
             return this;
         }
         if (!isActionLeft()) {
-            beacon.reportValue(this, valueName, value);
+            payloadGenerator.reportValue(this, valueName, value);
         }
         return this;
     }
@@ -134,7 +134,7 @@ public class ActionImpl implements Action {
             return this;
         }
         if (!isActionLeft()) {
-            beacon.reportError(this, errorName, errorCode, reason);
+            payloadGenerator.reportError(this, errorName, errorCode, reason);
         }
         return this;
     }
@@ -146,7 +146,7 @@ public class ActionImpl implements Action {
             return NULL_WEB_REQUEST_TRACER;
         }
         if (!isActionLeft()) {
-            return new WebRequestTracerURLConnection(beacon, this, connection);
+            return new WebRequestTracerURLConnection(payloadGenerator, this, connection);
         }
 
         return NULL_WEB_REQUEST_TRACER;
@@ -159,7 +159,7 @@ public class ActionImpl implements Action {
             return NULL_WEB_REQUEST_TRACER;
         }
         if (!isActionLeft()) {
-            return new WebRequestTracerStringURL(beacon, this, url);
+            return new WebRequestTracerStringURL(payloadGenerator, this, url);
         }
 
         return NULL_WEB_REQUEST_TRACER;
@@ -168,7 +168,7 @@ public class ActionImpl implements Action {
     @Override
     public Action leaveAction() {
         // check if leaveAction() was already called before by looking at endTime
-        if (!endTime.compareAndSet(-1, beacon.getCurrentTimestamp())) {
+        if (!endTime.compareAndSet(-1, payloadGenerator.getCurrentTimestamp())) {
             return parentAction;
         }
 
@@ -177,11 +177,11 @@ public class ActionImpl implements Action {
 
     protected Action doLeaveAction() {
         // set end time and end sequence number
-        endTime.set(beacon.getCurrentTimestamp());
-        endSequenceNo = beacon.createSequenceNumber();
+        endTime.set(payloadGenerator.getCurrentTimestamp());
+        endSequenceNo = payloadGenerator.createSequenceNumber();
 
         // add Action to Beacon
-        beacon.addAction(this);
+        payloadGenerator.addAction(this);
 
         // remove Action from the Actions on this level
         thisLevelActions.remove(this);

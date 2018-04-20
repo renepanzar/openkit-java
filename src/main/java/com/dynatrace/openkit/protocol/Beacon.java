@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * The Beacon class holds all the beacon data and the beacon protocol implementation.
  */
-public class Beacon {
+public class Beacon implements IPayloadGenerator {
 
     // basic data constants
     private static final String BEACON_KEY_PROTOCOL_VERSION = "vv";
@@ -169,7 +169,8 @@ public class Beacon {
      *
      * @return A unique identifier.
      */
-    public int createID() {
+    @Override
+	public int createID() {
         return nextID.incrementAndGet();
     }
 
@@ -178,7 +179,8 @@ public class Beacon {
      *
      * @return Current timestamp in milliseconds.
      */
-    public long getCurrentTimestamp() {
+    @Override
+	public long getCurrentTimestamp() {
         return timingProvider.provideTimestampInMilliseconds();
     }
 
@@ -192,7 +194,8 @@ public class Beacon {
      *
      * @return A unique sequence number.
      */
-    public int createSequenceNumber() {
+    @Override
+	public int createSequenceNumber() {
         return nextSequenceNumber.incrementAndGet();
     }
 
@@ -207,7 +210,8 @@ public class Beacon {
      * @param sequenceNo Sequence number of the {@link com.dynatrace.openkit.api.WebRequestTracer}.
      * @return A web request tracer tag.
      */
-    public String createTag(ActionImpl parentAction, int sequenceNo) {
+    @Override
+	public String createTag(ActionImpl parentAction, int sequenceNo) {
         return TAG_PREFIX + "_"
             + PROTOCOL_VERSION + "_"
             + httpConfiguration.getServerID() + "_"
@@ -228,7 +232,8 @@ public class Beacon {
      *
      * @param action The action to add.
      */
-    public void addAction(ActionImpl action) {
+    @Override
+	public void addAction(ActionImpl action) {
         StringBuilder actionBuilder = new StringBuilder();
 
         buildBasicEventData(actionBuilder, EventType.ACTION, action.getName());
@@ -252,7 +257,8 @@ public class Beacon {
      *
      * @param session The session to add.
      */
-    public void endSession(SessionImpl session) {
+    @Override
+	public void endSession(SessionImpl session) {
         StringBuilder eventBuilder = new StringBuilder();
 
         buildBasicEventData(eventBuilder, EventType.SESSION_END, null);
@@ -275,7 +281,8 @@ public class Beacon {
      * @param valueName Value's name.
      * @param value Actual value to report.
      */
-    public void reportValue(ActionImpl parentAction, String valueName, int value) {
+    @Override
+	public void reportValue(ActionImpl parentAction, String valueName, int value) {
         StringBuilder eventBuilder = new StringBuilder();
 
         long eventTimestamp = buildEvent(eventBuilder, EventType.VALUE_INT, valueName, parentAction);
@@ -295,7 +302,8 @@ public class Beacon {
      * @param valueName Value's name.
      * @param value Actual value to report.
      */
-    public void reportValue(ActionImpl parentAction, String valueName, double value) {
+    @Override
+	public void reportValue(ActionImpl parentAction, String valueName, double value) {
         StringBuilder eventBuilder = new StringBuilder();
 
         long eventTimestamp = buildEvent(eventBuilder, EventType.VALUE_DOUBLE, valueName, parentAction);
@@ -315,7 +323,8 @@ public class Beacon {
      * @param valueName Value's name.
      * @param value Actual value to report.
      */
-    public void reportValue(ActionImpl parentAction, String valueName, String value) {
+    @Override
+	public void reportValue(ActionImpl parentAction, String valueName, String value) {
         StringBuilder eventBuilder = new StringBuilder();
 
         long eventTimestamp = buildEvent(eventBuilder, EventType.VALUE_STRING, valueName, parentAction);
@@ -336,7 +345,8 @@ public class Beacon {
      * @param parentAction The {@link com.dynatrace.openkit.api.Action} on which this event was reported.
      * @param eventName Event's name.
      */
-    public void reportEvent(ActionImpl parentAction, String eventName) {
+    @Override
+	public void reportEvent(ActionImpl parentAction, String eventName) {
         StringBuilder eventBuilder = new StringBuilder();
 
         long eventTimestamp = buildEvent(eventBuilder, EventType.NAMED_EVENT, eventName, parentAction);
@@ -356,7 +366,8 @@ public class Beacon {
      * @param errorCode Some error code.
      * @param reason Reason for that error.
      */
-    public void reportError(ActionImpl parentAction, String errorName, int errorCode, String reason) {
+    @Override
+	public void reportError(ActionImpl parentAction, String errorName, int errorCode, String reason) {
         // if capture errors is off -> do nothing
         if (!configuration.isCaptureErrors()) {
             return;
@@ -389,7 +400,8 @@ public class Beacon {
      * @param reason Reason for that error.
      * @param stacktrace Crash stacktrace.
      */
-    public void reportCrash(String errorName, String reason, String stacktrace) {
+    @Override
+	public void reportCrash(String errorName, String reason, String stacktrace) {
         // if capture crashes is off -> do nothing
         if (!configuration.isCaptureCrashes()) {
             return;
@@ -423,7 +435,8 @@ public class Beacon {
      * @param parentAction The {@link com.dynatrace.openkit.api.Action} on which this web request was reported.
      * @param webRequestTracer Web request tracer to serialize.
      */
-    public void addWebRequest(ActionImpl parentAction, WebRequestTracerBaseImpl webRequestTracer) {
+    @Override
+	public void addWebRequest(ActionImpl parentAction, WebRequestTracerBaseImpl webRequestTracer) {
         StringBuilder eventBuilder = new StringBuilder();
 
         buildBasicEventData(eventBuilder, EventType.WEBREQUEST, webRequestTracer.getURL());
@@ -457,7 +470,8 @@ public class Beacon {
      *
      * @param userTag User tag containing data to serialize.
      */
-    public void identifyUser(String userTag) {
+    @Override
+	public void identifyUser(String userTag) {
         StringBuilder eventBuilder = new StringBuilder();
 
         buildBasicEventData(eventBuilder, EventType.IDENTIFY_USER, userTag);
@@ -481,7 +495,8 @@ public class Beacon {
      *
      * @return Returns the last status response retrieved from the server side, or {@code null} if an error occurred.
      */
-    public StatusResponse send() {
+    @Override
+	public StatusResponse send() {
 
 		HTTPConnector httpClient = (HTTPConnector)connectorProvider.createConnector(httpConfiguration);
         StatusResponse response = null;
@@ -583,7 +598,8 @@ public class Beacon {
      * This only affects the so far serialized data, which gets removed from the cache.
      * </p>
      */
-    public void clearData() {
+    @Override
+	public void clearData() {
 
         // remove all cached data for this Beacon from the cache
         beaconCache.deleteCacheEntry(sessionNumber);
@@ -783,7 +799,8 @@ public class Beacon {
      *
      * @return {@code true} if the beacon is empty, {@code false} otherwise.
      */
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
         return beaconCache.isEmpty(sessionNumber);
     }
 }

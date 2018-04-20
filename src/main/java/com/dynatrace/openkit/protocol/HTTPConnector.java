@@ -102,9 +102,7 @@ public class HTTPConnector implements Connector {
         monitorURL = buildMonitorURL(configuration.getBaseURL(), configuration.getApplicationID(), serverID);
         timeSyncURL = buildTimeSyncURL(configuration.getBaseURL());
         sslTrustManager = configuration.getSSLTrustManager();
-
-        // TODO - replace with serializer
-        this.serializer = null;
+		this.serializer = new MobileProtocolV3Serializer();
 	}
 
     // *** public methods ***

@@ -58,9 +58,9 @@ customize OpenKit. This includes device specific information like operating syst
 | `withOperatingSystem`  | sets the operating system name | `"OpenKit 1.0.0"` |
 | `withManufacturer`  | sets the manufacturer | `"Dynatrace"` |
 | `withModelID`  | sets the model id  | `"OpenKitDevice"` |
-| `withBeaconCacheMaxRecordAge`  | sets the maximum age of an entry in the beacon cache in milliseconds | 1 h 45 min |
-| `withBeaconCacheLowerMemoryBoundary`  | sets the lower memory boundary of the beacon cache in bytes  | 100 MB |
-| `withBeaconCacheUpperMemoryBoundary`  |  sets the upper memory boundary of the beacon cache in bytes | 80 MB |
+| `withBeaconCacheMaxRecordAge`  | sets the maximum age of an entry in the payloadGenerator cache in milliseconds | 1 h 45 min |
+| `withBeaconCacheLowerMemoryBoundary`  | sets the lower memory boundary of the payloadGenerator cache in bytes  | 100 MB |
+| `withBeaconCacheUpperMemoryBoundary`  |  sets the upper memory boundary of the payloadGenerator cache in bytes | 80 MB |
 | `enableVerbose`  | enables extended log output for OpenKit if the default logger is used  | `false` |
 
 :grey_exclamation: Please refer to the the JavaDoc for more information regarding possible configuration values.

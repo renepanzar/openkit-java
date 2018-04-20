@@ -17,7 +17,7 @@
 package com.dynatrace.openkit.core;
 
 import com.dynatrace.openkit.api.WebRequestTracer;
-import com.dynatrace.openkit.protocol.Beacon;
+import com.dynatrace.openkit.protocol.IPayloadGenerator;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -42,22 +42,22 @@ public abstract class WebRequestTracerBaseImpl implements WebRequestTracer {
     private int endSequenceNo = -1;
 
     // Beacon and Action references
-    private Beacon beacon;
+    private IPayloadGenerator payloadGenerator;
     private ActionImpl action;
 
     // *** constructors ***
 
-    WebRequestTracerBaseImpl(Beacon beacon, ActionImpl action) {
-        this.beacon = beacon;
+    WebRequestTracerBaseImpl(IPayloadGenerator payloadGenerator, ActionImpl action) {
+        this.payloadGenerator = payloadGenerator;
         this.action = action;
 
         // creating start sequence number has to be done here, because it's needed for the creation of the tag
-        startSequenceNo = beacon.createSequenceNumber();
+        startSequenceNo = payloadGenerator.createSequenceNumber();
 
-        tag = beacon.createTag(action, startSequenceNo);
+        tag = payloadGenerator.createTag(action, startSequenceNo);
 
         // if start is not called before using the setters the start time (e.g. load time) is not in 1970
-        startTime = beacon.getCurrentTimestamp();
+        startTime = payloadGenerator.getCurrentTimestamp();
     }
 
     // *** WebRequestTracer interface methods ***
@@ -94,21 +94,21 @@ public abstract class WebRequestTracerBaseImpl implements WebRequestTracer {
     @Override
     public WebRequestTracer start() {
         if (!isStopped()) {
-            startTime = beacon.getCurrentTimestamp();
+            startTime = payloadGenerator.getCurrentTimestamp();
         }
         return this;
     }
 
     @Override
     public void stop() {
-        if (!endTime.compareAndSet(-1, beacon.getCurrentTimestamp())) {
+        if (!endTime.compareAndSet(-1, payloadGenerator.getCurrentTimestamp())) {
             // stop already called
             return;
         }
-        endSequenceNo = beacon.createSequenceNumber();
+        endSequenceNo = payloadGenerator.createSequenceNumber();
 
-        // add web request to beacon
-        beacon.addWebRequest(action, this);
+        // add web request to payloadGenerator
+        payloadGenerator.addWebRequest(action, this);
     }
 
     @Override

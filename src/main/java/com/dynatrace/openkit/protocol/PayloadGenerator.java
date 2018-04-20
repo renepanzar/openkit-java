@@ -13,7 +13,7 @@ import com.dynatrace.openkit.protocol.dto.Payload;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
-public class PayloadGenerator {
+public class PayloadGenerator implements IPayloadGenerator {
 
 	// protocol version
 	private static final int PROTOCOL_VERSION = 3;
@@ -109,6 +109,11 @@ public class PayloadGenerator {
 	 */
 	public int createSequenceNumber() {
 		return nextSequenceNumber.incrementAndGet();
+	}
+
+	@Override
+	public String createTag(ActionImpl parentAction, int sequenceNo) {
+		return "";
 	}
 
 	/**
@@ -287,7 +292,7 @@ public class PayloadGenerator {
 		StatusResponse retVal = null;
 
 		synchronized (this) {
-			retVal =configuration.getConnector().sendBeaconRequest(clientIPAddress, payload);
+			retVal = configuration.getConnector().sendBeaconRequest(clientIPAddress, payload);
 			payload.clearActions();
 		}
 
@@ -303,6 +308,11 @@ public class PayloadGenerator {
 	 */
 	public void clearData() {
 
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return this.payload.getActions().isEmpty();
 	}
 
 	/**

@@ -20,7 +20,7 @@ import com.dynatrace.openkit.api.Action;
 import com.dynatrace.openkit.api.Logger;
 import com.dynatrace.openkit.api.RootAction;
 import com.dynatrace.openkit.api.Session;
-import com.dynatrace.openkit.protocol.Beacon;
+import com.dynatrace.openkit.protocol.IPayloadGenerator;
 import com.dynatrace.openkit.protocol.StatusResponse;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -37,7 +37,7 @@ public class SessionImpl implements Session {
 
     // BeaconSender and Beacon reference
     private final BeaconSender beaconSender;
-    private final Beacon beacon;
+    private final IPayloadGenerator payloadGenerator;
 
     // used for taking care to really leave all Actions at the end of this Session
     private SynchronizedQueue<Action> openRootActions = new SynchronizedQueue<Action>();
@@ -46,10 +46,10 @@ public class SessionImpl implements Session {
 
     // *** constructors ***
 
-    SessionImpl(Logger logger, BeaconSender beaconSender, Beacon beacon) {
+    SessionImpl(Logger logger, BeaconSender beaconSender, IPayloadGenerator payloadGenerator) {
         this.logger = logger;
         this.beaconSender = beaconSender;
-        this.beacon = beacon;
+        this.payloadGenerator = payloadGenerator;
 
         beaconSender.startSession(this);
     }
@@ -71,7 +71,7 @@ public class SessionImpl implements Session {
         if (isSessionEnded()) {
             return NULL_ROOT_ACTION;
         }
-        return new RootActionImpl(logger, beacon, actionName, openRootActions);
+        return new RootActionImpl(logger, payloadGenerator, actionName, openRootActions);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SessionImpl implements Session {
             return;
         }
         if (!isSessionEnded()) {
-            beacon.identifyUser(userTag);
+            payloadGenerator.identifyUser(userTag);
         }
     }
 
@@ -92,14 +92,14 @@ public class SessionImpl implements Session {
             return;
         }
         if (!isSessionEnded()) {
-            beacon.reportCrash(errorName, reason, stacktrace);
+            payloadGenerator.reportCrash(errorName, reason, stacktrace);
         }
     }
 
     @Override
     public void end() {
         // check if end() was already called before by looking at endTime
-        if (!endTime.compareAndSet(-1L, beacon.getCurrentTimestamp())) {
+        if (!endTime.compareAndSet(-1L, payloadGenerator.getCurrentTimestamp())) {
             return;
         }
 
@@ -109,8 +109,8 @@ public class SessionImpl implements Session {
             action.leaveAction();
         }
 
-        // create end session data on beacon
-        beacon.endSession(this);
+        // create end session data on payloadGenerator
+        payloadGenerator.endSession(this);
 
         // finish session and stop managing it
         beaconSender.finishSession(this);
@@ -120,7 +120,7 @@ public class SessionImpl implements Session {
 
     // sends the current Beacon state
     public StatusResponse sendBeacon() {
-        return beacon.send();
+        return payloadGenerator.send();
     }
 
     // *** getter methods ***
@@ -137,7 +137,7 @@ public class SessionImpl implements Session {
      * </p>
      */
     public void clearCapturedData() {
-        beacon.clearData();
+        payloadGenerator.clearData();
     }
 
     /**
@@ -150,7 +150,7 @@ public class SessionImpl implements Session {
      * @return {@code true} if the session is empty, {@code false} otherwise.
      */
     public boolean isEmpty() {
-        return beacon.isEmpty();
+        return payloadGenerator.isEmpty();
     }
 
     /**
