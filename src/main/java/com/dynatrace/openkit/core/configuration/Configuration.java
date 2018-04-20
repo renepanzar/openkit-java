@@ -18,6 +18,7 @@ package com.dynatrace.openkit.core.configuration;
 
 import com.dynatrace.openkit.api.SSLTrustManager;
 import com.dynatrace.openkit.core.Device;
+import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import com.dynatrace.openkit.providers.SessionIDProvider;
 
@@ -58,11 +59,13 @@ public class Configuration {
 
     private SessionIDProvider sessionIDProvider;
 
+    private Connector connector;
+
     // *** constructors ***
 
     public Configuration(OpenKitType openKitType, String applicationName, String applicationID, long deviceID, String endpointURL,
                          SessionIDProvider sessionIDProvider, SSLTrustManager trustManager, Device device, String applicationVersion,
-                         BeaconCacheConfiguration beaconCacheConfiguration) {
+                         BeaconCacheConfiguration beaconCacheConfiguration, Connector connector) {
 
         this.openKitType = openKitType;
 
@@ -81,12 +84,13 @@ public class Configuration {
 
         this.device = device;
 
-        httpClientConfiguration =
+       /* httpClientConfiguration =
             new HTTPClientConfiguration(
                 endpointURL,
                 openKitType.getDefaultServerID(),
                 applicationID,
-                trustManager);
+                trustManager);*/
+        this.connector = connector;
 
         this.applicationVersion = applicationVersion;
 
@@ -96,6 +100,10 @@ public class Configuration {
     }
 
     // *** public methods ***
+
+    public Connector getConnector(){
+        return connector;
+    }
 
     // return next session number
     public int createSessionNumber() {
