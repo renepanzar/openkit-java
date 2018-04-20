@@ -39,7 +39,7 @@ public class BeaconSendingInitStateTest {
         httpClient = mock(HTTPConnector.class);
         stateContext = mock(BeaconSendingContext.class);
 
-        when(stateContext.getHTTPClient()).thenReturn(httpClient);
+        when(stateContext.getConnector()).thenReturn(httpClient);
     }
 
     @Test
@@ -270,7 +270,7 @@ public class BeaconSendingInitStateTest {
         verify(stateContext, times(1)).setNextState(org.mockito.Matchers.any(BeaconSendingTerminalState.class)); // state transition to terminal state
 
         // verify that the requests where sent N times - defined as constants in the state itself
-        verify(stateContext, times(3)).getHTTPClient();
+        verify(stateContext, times(3)).getConnector();
         verify(httpClient, times(3)).sendStatusRequest();
 
         // verify sleeps between each retry

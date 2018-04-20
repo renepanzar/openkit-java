@@ -38,7 +38,7 @@ public class BeaconSendingRequestUtilTest {
         httpClient = mock(HTTPConnector.class);
         response = mock(StatusResponse.class);
 
-        when(context.getHTTPClient()).thenReturn(httpClient);
+        when(context.getConnector()).thenReturn(httpClient);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class BeaconSendingRequestUtilTest {
         assertThat(obtained, is(nullValue()));
 
         verify(context, times(1)).isShutdownRequested();
-        verify(context, times(1)).getHTTPClient();
+        verify(context, times(1)).getConnector();
 
         verify(httpClient, times(1)).sendStatusRequest();
 
@@ -75,7 +75,7 @@ public class BeaconSendingRequestUtilTest {
         // then
         assertThat(obtained, is(nullValue()));
 
-        verify(context, times(4)).getHTTPClient();
+        verify(context, times(4)).getConnector();
         verify(context, times(3)).sleep(anyLong());
         verify(httpClient, times(4)).sendStatusRequest();
 
@@ -96,7 +96,7 @@ public class BeaconSendingRequestUtilTest {
         assertThat(obtained, is(notNullValue()));
         assertThat(obtained, is(sameInstance(response)));
 
-        verify(context, times(1)).getHTTPClient();
+        verify(context, times(1)).getConnector();
 
         verify(httpClient, times(1)).sendStatusRequest();
 
@@ -116,7 +116,7 @@ public class BeaconSendingRequestUtilTest {
 
         // then
         assertThat(obtained, is(nullValue()));
-        verify(context, times(6)).getHTTPClient();
+        verify(context, times(6)).getConnector();
         verify(httpClient, times(6)).sendStatusRequest();
 
         inOrder.verify(context).sleep(1000L);

@@ -123,7 +123,7 @@ class BeaconSendingTimeSyncState extends AbstractBeaconSendingState {
         while (timeSyncOffsets.size() < TIME_SYNC_REQUESTS && !context.isShutdownRequested()) {
             // doExecute time-sync request and take timestamps
             long requestSendTime = context.getCurrentTimestamp();
-            TimeSyncResponse timeSyncResponse = context.getHTTPClient().sendTimeSyncRequest();
+            TimeSyncResponse timeSyncResponse = context.getConnector().sendTimeSyncRequest();
             long responseReceiveTime = context.getCurrentTimestamp();
 
             if (timeSyncResponse != null) {

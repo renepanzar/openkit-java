@@ -38,7 +38,7 @@ public class BeaconSendingCaptureOffStateTest {
         when(httpClient.sendStatusRequest()).thenReturn(mockResponse);
 
         mockContext = mock(BeaconSendingContext.class);
-        when(mockContext.getHTTPClient()).thenReturn(httpClient);
+        when(mockContext.getConnector()).thenReturn(httpClient);
         when(mockContext.isTimeSynced()).thenReturn(true);
     }
 

@@ -26,6 +26,7 @@ public class PayloadGenerator {
 	// web request tag prefix constant
 	private static final String TAG_PREFIX = "MT";
 	private final long sessionStartTime;
+	private final String clientIPAddress;
 
 	// next ID and sequence number
 	private AtomicInteger nextID = new AtomicInteger(0);
@@ -63,6 +64,8 @@ public class PayloadGenerator {
 		this.configuration = configuration;
 		this.threadIDProvider = threadIDProvider;
 		this.sessionStartTime = timingProvider.provideTimestampInMilliseconds();
+
+		this.clientIPAddress = clientIPAddress;
 
 		this.payload = new Payload(
 				clientIPAddress,
@@ -278,18 +281,17 @@ public class PayloadGenerator {
 	 * This method tries to send all so far collected and serialized data.
 	 * </p>
 	 *
-	 * @param provider Provider for getting an {@link HTTPConnector} required to send the data.
-	 *
 	 * @return Returns the last status response retrieved from the server side, or {@code null} if an error occurred.
 	 */
 	public StatusResponse send() {
+		StatusResponse retVal = null;
+
 		synchronized (this) {
-			configuration.getConnector().sendBeaconRequest(null, payload);
+			retVal =configuration.getConnector().sendBeaconRequest(clientIPAddress, payload);
 			payload.clearActions();
 		}
 
-		// return valid dummy response
-		return new StatusResponse( "",200);
+		return retVal;
 	}
 
 	/**

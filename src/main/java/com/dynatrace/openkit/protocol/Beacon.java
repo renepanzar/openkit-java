@@ -24,7 +24,7 @@ import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
 import com.dynatrace.openkit.core.util.InetAddressValidator;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
+import com.dynatrace.openkit.providers.ConnectorProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
@@ -105,7 +105,7 @@ public class Beacon {
     private final TimingProvider timingProvider;
     private final ThreadIDProvider threadIDProvider;
     private final long sessionStartTime;
-	private final HTTPClientProvider httpClientProvider;
+	private final ConnectorProvider connectorProvider;
 
 	// client IP address
     private final String clientIPAddress;
@@ -136,7 +136,7 @@ public class Beacon {
      * @param timingProvider Provider for time related methods.
      */
     public Beacon(Logger logger, BeaconCacheImpl beaconCache, Configuration configuration, String clientIPAddress,
-			ThreadIDProvider threadIDProvider, TimingProvider timingProvider, HTTPClientProvider httpClientProvider) {
+			ThreadIDProvider threadIDProvider, TimingProvider timingProvider, ConnectorProvider connectorProvider) {
         this.logger = logger;
         this.beaconCache = beaconCache;
         this.sessionNumber = configuration.createSessionNumber();
@@ -145,7 +145,7 @@ public class Beacon {
         this.configuration = configuration;
         this.threadIDProvider = threadIDProvider;
         this.sessionStartTime = timingProvider.provideTimestampInMilliseconds();
-		this.httpClientProvider = httpClientProvider;
+		this.connectorProvider = connectorProvider;
 
 		if (InetAddressValidator.isValidIP(clientIPAddress)) {
             this.clientIPAddress = clientIPAddress;
@@ -483,7 +483,7 @@ public class Beacon {
      */
     public StatusResponse send() {
 
-        HTTPConnector httpClient = httpClientProvider.createClient(httpConfiguration);
+		HTTPConnector httpClient = (HTTPConnector)connectorProvider.createClient(httpConfiguration);
         StatusResponse response = null;
 
         while (true) {

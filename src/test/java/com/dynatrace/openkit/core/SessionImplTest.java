@@ -24,7 +24,7 @@ import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
 import com.dynatrace.openkit.protocol.Beacon;
 import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
+import com.dynatrace.openkit.providers.ConnectorProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
@@ -58,7 +58,7 @@ public class SessionImplTest {
         beacon = createBeacon(null);
     }
 
-    private Beacon createBeacon(HTTPClientProvider provider) {
+    private Beacon createBeacon(ConnectorProvider provider) {
 		logger = mock(Logger.class);
 		when(logger.isInfoEnabled()).thenReturn(true);
 		when(logger.isDebugEnabled()).thenReturn(true);
@@ -74,7 +74,7 @@ public class SessionImplTest {
 		final String clientIPAddress = "127.0.0.1";
 		final ThreadIDProvider threadIDProvider = mock(ThreadIDProvider.class);
 		final TimingProvider timingProvider = mock(TimingProvider.class);
-		final HTTPClientProvider clientProvider = provider == null ? mock(HTTPClientProvider.class) : provider;
+		final ConnectorProvider clientProvider = provider == null ? mock(ConnectorProvider.class) : provider;
 		when(timingProvider.provideTimestampInMilliseconds()).thenReturn(System.currentTimeMillis());
 		return new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider, clientProvider);
 	}
@@ -398,7 +398,7 @@ public class SessionImplTest {
 		final HTTPConnector httpClient = mock(HTTPConnector.class);
 		final StatusResponse statusResponse = new StatusResponse("", 200);
 		when(httpClient.sendBeaconRequest(isA(String.class), any(byte[].class))).thenReturn(statusResponse);
-		final HTTPClientProvider clientProvider = mock(HTTPClientProvider.class);
+		final ConnectorProvider clientProvider = mock(ConnectorProvider.class);
 		when(clientProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
 
     	final Beacon beacon = createBeacon(clientProvider);

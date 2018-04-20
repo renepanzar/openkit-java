@@ -22,7 +22,6 @@ import com.dynatrace.openkit.api.RootAction;
 import com.dynatrace.openkit.api.Session;
 import com.dynatrace.openkit.protocol.Beacon;
 import com.dynatrace.openkit.protocol.StatusResponse;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
 
 import java.util.concurrent.atomic.AtomicLong;
 

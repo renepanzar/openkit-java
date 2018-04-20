@@ -18,13 +18,13 @@ package com.dynatrace.openkit.test.providers;
 
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
 import com.dynatrace.openkit.protocol.HTTPConnector;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
+import com.dynatrace.openkit.providers.ConnectorProvider;
 import com.dynatrace.openkit.test.TestHTTPClient;
 import com.dynatrace.openkit.test.TestHTTPClient.Request;
 
 import java.util.ArrayList;
 
-public class TestHTTPClientProvider implements HTTPClientProvider {
+public class TestConnectorProvider implements ConnectorProvider {
 
     private boolean remoteTest;
     private TestHTTPClient testHTTPClient;
@@ -36,7 +36,7 @@ public class TestHTTPClientProvider implements HTTPClientProvider {
 
     ArrayList<Request> previouslySentRequests = new ArrayList<Request>();
 
-    public TestHTTPClientProvider(boolean remoteTest) {
+    public TestConnectorProvider(boolean remoteTest) {
         this.remoteTest = remoteTest;
     }
 

@@ -18,9 +18,10 @@ package com.dynatrace.openkit.core.communication;
 
 import com.dynatrace.openkit.core.SessionImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
+import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
+import com.dynatrace.openkit.providers.ConnectorProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
 import java.util.concurrent.CountDownLatch;
@@ -39,7 +40,7 @@ public class BeaconSendingContext {
     static final long DEFAULT_SLEEP_TIME_MILLISECONDS = TimeUnit.SECONDS.toMillis(1);
 
     private final Configuration configuration;
-    private final HTTPClientProvider httpClientProvider;
+    private final ConnectorProvider connectorProvider;
     private final TimingProvider timingProvider;
 
     /**
@@ -96,11 +97,11 @@ public class BeaconSendingContext {
      * </p>
      */
     public BeaconSendingContext(Configuration configuration,
-                                HTTPClientProvider httpClientProvider,
+                                ConnectorProvider connectorProvider,
                                 TimingProvider timingProvider) {
 
         this.configuration = configuration;
-        this.httpClientProvider = httpClientProvider;
+        this.connectorProvider = connectorProvider;
         this.timingProvider = timingProvider;
 
         currentState = new BeaconSendingInitState();
@@ -277,17 +278,17 @@ public class BeaconSendingContext {
      *
      * @return A class responsible for retrieving an instance of {@link HTTPConnector}.
      */
-    HTTPClientProvider getHTTPClientProvider() {
-        return httpClientProvider;
+    ConnectorProvider getHTTPClientProvider() {
+        return connectorProvider;
     }
 
     /**
      * Convenience method to retrieve an HTTP client.
      *
-     * @return HTTP client received from {@link HTTPClientProvider}.
+     * @return HTTP client received from {@link ConnectorProvider}.
      */
-    HTTPConnector getHTTPClient() {
-        return httpClientProvider.createClient(configuration.getHttpClientConfig());
+    Connector getConnector() {
+        return connectorProvider.createClient(configuration.getHttpClientConfig());
     }
 
     /**

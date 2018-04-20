@@ -16,16 +16,24 @@
 
 package com.dynatrace.openkit.providers;
 
+import com.dynatrace.openkit.api.Logger;
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
 import com.dynatrace.openkit.protocol.HTTPConnector;
 
 /**
- * Interface for providing an HTTP client. Mostly needed for testing purposes.
+ * Implementation of an ConnectorProvider which creates a HTTP client for executing status check, beacon send and time sync requests.
  */
-public interface HTTPClientProvider {
+public class DefaultConnectorProvider implements ConnectorProvider {
 
-    /**
-     * Returns an HTTPConnector based on the provided configuration.
-     */
-    HTTPConnector createClient(HTTPClientConfiguration configuration);
+    private final Logger logger;
+
+    public DefaultConnectorProvider(Logger logger) {
+        this.logger = logger;
+    }
+
+    @Override
+    public HTTPConnector createClient(HTTPClientConfiguration configuration) {
+        return new HTTPConnector(logger, configuration);
+    }
+
 }

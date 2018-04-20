@@ -23,7 +23,7 @@ import com.dynatrace.openkit.providers.DefaultTimingProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 import com.dynatrace.openkit.test.TestHTTPClient.Request;
-import com.dynatrace.openkit.test.providers.TestHTTPClientProvider;
+import com.dynatrace.openkit.test.providers.TestConnectorProvider;
 import com.dynatrace.openkit.test.providers.TestTimingProvider;
 
 import java.util.ArrayList;
@@ -33,15 +33,15 @@ import static org.mockito.Mockito.when;
 
 public class OpenKitTestImpl extends OpenKitImpl {
 
-    TestHTTPClientProvider testHttpClientProvider;
+    TestConnectorProvider testHttpClientProvider;
 
     public OpenKitTestImpl(Logger logger, Configuration config, boolean remoteTest) {
-        this(logger, config, new TestHTTPClientProvider(remoteTest), remoteTest
+        this(logger, config, new TestConnectorProvider(remoteTest), remoteTest
             ? new DefaultTimingProvider()
             : new TestTimingProvider());
     }
 
-    private OpenKitTestImpl(Logger logger, Configuration config, TestHTTPClientProvider provider, TimingProvider timingProvider) {
+    private OpenKitTestImpl(Logger logger, Configuration config, TestConnectorProvider provider, TimingProvider timingProvider) {
         super(logger, config, provider, timingProvider, createThreadIdProvider());
         testHttpClientProvider = provider;
     }

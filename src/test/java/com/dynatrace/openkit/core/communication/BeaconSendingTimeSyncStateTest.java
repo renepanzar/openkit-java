@@ -48,7 +48,7 @@ public class BeaconSendingTimeSyncStateTest {
 
         when(stateContext.isTimeSyncSupported()).thenReturn(true); // by set time sync support to enabled
         when(stateContext.getLastTimeSyncTime()).thenReturn(-1L);
-        when(stateContext.getHTTPClient()).thenReturn(httpClient);
+        when(stateContext.getConnector()).thenReturn(httpClient);
     }
 
     @Test

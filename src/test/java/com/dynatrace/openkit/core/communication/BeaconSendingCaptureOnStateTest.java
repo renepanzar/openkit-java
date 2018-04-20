@@ -18,7 +18,7 @@ package com.dynatrace.openkit.core.communication;
 
 import com.dynatrace.openkit.core.SessionImpl;
 import com.dynatrace.openkit.protocol.StatusResponse;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
+import com.dynatrace.openkit.providers.ConnectorProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class BeaconSendingCaptureOnStateTest {
         when(mockSession1Open.sendBeacon()).thenReturn(new StatusResponse("", 200));
         when(mockSession2Open.sendBeacon()).thenReturn(new StatusResponse("", 404));
 
-        HTTPClientProvider mockHTTPClientProvider = mock(HTTPClientProvider.class);
+        ConnectorProvider mockConnectorProvider = mock(ConnectorProvider.class);
 
         mockContext = mock(BeaconSendingContext.class);
         when(mockContext.isTimeSyncSupported()).thenReturn(true);
@@ -56,7 +56,7 @@ public class BeaconSendingCaptureOnStateTest {
         when(mockContext.getNextFinishedSession()).thenReturn(mockSession3Finished)
                                                   .thenReturn(mockSession4Finished)
                                                   .thenReturn(null);
-        when(mockContext.getHTTPClientProvider()).thenReturn(mockHTTPClientProvider);
+        when(mockContext.getHTTPClientProvider()).thenReturn(mockConnectorProvider);
     }
 
     @Test

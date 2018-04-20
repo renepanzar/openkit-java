@@ -21,8 +21,8 @@ import com.dynatrace.openkit.core.*;
 import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
+import com.dynatrace.openkit.providers.ConnectorProvider;
 import com.dynatrace.openkit.providers.DefaultTimingProvider;
-import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 
 import org.junit.Before;
@@ -75,7 +75,7 @@ public class BeaconTest {
     public void createIDs() {
         // create test environment
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
 
         // verify that the created sequence numbers are incremented
         int id1 = beacon.createID();
@@ -92,7 +92,7 @@ public class BeaconTest {
     public void getCurrentTimestamp() {
         // create test environment
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new DefaultTimingProvider(), mock(HTTPClientProvider.class));
+                new DefaultTimingProvider(), mock(ConnectorProvider.class));
 
         long timestamp = beacon.getCurrentTimestamp();
 
@@ -104,7 +104,7 @@ public class BeaconTest {
     public void createSequenceNumbers() {
         // create test environment
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
 
         // verify that the created sequence numbers are incremented
         int id1 = beacon.createSequenceNumber();
@@ -121,7 +121,7 @@ public class BeaconTest {
     public void createWebRequestTag() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
 
@@ -138,7 +138,7 @@ public class BeaconTest {
     public void addValidActionEvent() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         int parentID = 13;
@@ -159,7 +159,7 @@ public class BeaconTest {
     public void addEndSessionEvent() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         SessionImpl session = mock(SessionImpl.class);
 
         // when
@@ -174,7 +174,7 @@ public class BeaconTest {
     public void reportValidValueInt() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String valueName = "IntValue";
@@ -193,7 +193,7 @@ public class BeaconTest {
     public void reportValidValueDouble() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String valueName = "DoubleValue";
@@ -212,7 +212,7 @@ public class BeaconTest {
     public void reportValidValueString() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String valueName = "StringValue";
@@ -231,7 +231,7 @@ public class BeaconTest {
     public void reportValueStringWithValueNull() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String valueName = "StringValue";
@@ -249,7 +249,7 @@ public class BeaconTest {
     public void reportValueStringWithValueNullAndNameNull() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String valueName = null;
@@ -267,7 +267,7 @@ public class BeaconTest {
     public void reportValidEvent() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String eventName = "SomeEvent";
@@ -285,7 +285,7 @@ public class BeaconTest {
     public void reportEventWithNameNull() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String eventName = null;
@@ -302,7 +302,7 @@ public class BeaconTest {
     public void reportError() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String errorName = "SomeEvent";
@@ -323,7 +323,7 @@ public class BeaconTest {
     public void reportErrorNull() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         String errorName = null;
@@ -343,7 +343,7 @@ public class BeaconTest {
     public void reportValidCrash() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String errorName = "SomeEvent";
         String reason = "SomeReason";
         String stacktrace = "SomeStacktrace";
@@ -361,7 +361,7 @@ public class BeaconTest {
     public void reportCrashWithDetailsNull() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String errorName = "errorName";
         String reason = null;
         String stacktrace = null;
@@ -378,7 +378,7 @@ public class BeaconTest {
     public void addWebRequest() {
         // given
         final Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         ActionImpl action = mock(ActionImpl.class);
         when(action.getID()).thenReturn(ACTION_ID);
         WebRequestTracerURLConnection webRequestTracer = mock(WebRequestTracerURLConnection.class);
@@ -399,7 +399,7 @@ public class BeaconTest {
     public void addUserIdentifyEvent() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String userID = "myTestUser";
 
         // when
@@ -414,7 +414,7 @@ public class BeaconTest {
     public void addUserIdentifyWithNullUserIDEvent() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String userID = null;
 
         // when
@@ -429,7 +429,7 @@ public class BeaconTest {
     public void canAddSentBytesToWebRequestTracer() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String testURL = "localhost";
         RootActionImpl rootAction = mock(RootActionImpl.class);
         WebRequestTracerStringURL webRequest = new WebRequestTracerStringURL(beacon, rootAction, testURL);
@@ -448,7 +448,7 @@ public class BeaconTest {
     public void canAddSentBytesValueZeroToWebRequestTracer() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String testURL = "localhost";
         RootActionImpl rootAction = mock(RootActionImpl.class);
         WebRequestTracerStringURL webRequest = new WebRequestTracerStringURL(beacon, rootAction, testURL);
@@ -467,7 +467,7 @@ public class BeaconTest {
     public void cannotAddSentBytesWithInvalidValueSmallerZeroToWebRequestTracer() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String testURL = "localhost";
         RootActionImpl rootAction = mock(RootActionImpl.class);
         WebRequestTracerStringURL webRequest = new WebRequestTracerStringURL(beacon, rootAction, testURL);
@@ -485,7 +485,7 @@ public class BeaconTest {
     public void canAddReceivedBytesToWebRequestTracer() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String testURL = "localhost";
         RootActionImpl rootAction = mock(RootActionImpl.class);
         WebRequestTracerStringURL webRequest = new WebRequestTracerStringURL(beacon, rootAction, testURL);
@@ -504,7 +504,7 @@ public class BeaconTest {
     public void canAddReceivedBytesValueZeroToWebRequestTracer() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String testURL = "localhost";
         RootActionImpl rootAction = mock(RootActionImpl.class);
         WebRequestTracerStringURL webRequest = new WebRequestTracerStringURL(beacon, rootAction, testURL);
@@ -523,7 +523,7 @@ public class BeaconTest {
     public void cannotAddReceivedBytesWithInvalidValueSmallerZeroToWebRequestTracer() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String testURL = "localhost";
         RootActionImpl rootAction = mock(RootActionImpl.class);
         WebRequestTracerStringURL webRequest = new WebRequestTracerStringURL(beacon, rootAction, testURL);
@@ -541,7 +541,7 @@ public class BeaconTest {
     public void canAddBothSentBytesAndReceivedBytesToWebRequestTracer() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         String testURL = "localhost";
         RootActionImpl rootAction = mock(RootActionImpl.class);
         WebRequestTracerStringURL webRequest = new WebRequestTracerStringURL(beacon, rootAction, testURL);
@@ -568,7 +568,7 @@ public class BeaconTest {
 
         // when
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         beacon.addAction(rootAction);
 
         String[] actions = beacon.getActions();
@@ -588,7 +588,7 @@ public class BeaconTest {
 
         // when
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         beacon.addAction(rootAction);
 
         String[] actions = beacon.getActions();
@@ -601,10 +601,10 @@ public class BeaconTest {
     public void canHandleNoDataInBeaconSend() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
-        HTTPClientProvider httpClientProvider = mock(HTTPClientProvider.class);
+                new NullTimeProvider(), mock(ConnectorProvider.class));
+        ConnectorProvider connectorProvider = mock(ConnectorProvider.class);
         HTTPConnector mockClient = mock(HTTPConnector.class);
-        when(httpClientProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(mockClient);
+        when(connectorProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(mockClient);
 
         // when
         StatusResponse response = beacon.send();
@@ -617,14 +617,14 @@ public class BeaconTest {
     public void sendValidData() {
         // given
         String ipAddr = "127.0.0.1";
-        HTTPClientProvider httpClientProvider = mock(HTTPClientProvider.class);
+        ConnectorProvider connectorProvider = mock(ConnectorProvider.class);
 		HTTPConnector httpClient = mock(HTTPConnector.class);
 		int responseCode = 200;
 		when(httpClient.sendBeaconRequest(any(String.class), any(byte[].class)))
                 .thenReturn(new StatusResponse("", responseCode));
-		when(httpClientProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
+		when(connectorProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
 		Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, ipAddr, threadIDProvider,
-				new NullTimeProvider(), httpClientProvider);
+				new NullTimeProvider(), connectorProvider);
 
         // when (add data and try to send it)
         beacon.reportCrash("errorName", "errorReason", "errorStackTrace");
@@ -640,14 +640,14 @@ public class BeaconTest {
     public void sendDataAndFakeErrorResponse() {
         // given
         String ipAddr = "127.0.0.1";
-        HTTPClientProvider httpClientProvider = mock(HTTPClientProvider.class);
+        ConnectorProvider connectorProvider = mock(ConnectorProvider.class);
 		HTTPConnector httpClient = mock(HTTPConnector.class);
 		int responseCode = 418;
 		when(httpClient.sendBeaconRequest(any(String.class), any(byte[].class)))
                 .thenReturn(new StatusResponse("", responseCode));
-		when(httpClientProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
+		when(connectorProvider.createClient(any(HTTPClientConfiguration.class))).thenReturn(httpClient);
 		Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, ipAddr, threadIDProvider,
-				new NullTimeProvider(), httpClientProvider);
+				new NullTimeProvider(), connectorProvider);
 
         // when (add data and try to send it)
         beacon.reportCrash("errorName", "errorReason", "errorStackTrace");
@@ -663,7 +663,7 @@ public class BeaconTest {
     public void clearDataFromBeaconCache() {
         // given
         Beacon beacon = new Beacon(logger, new BeaconCacheImpl(), configuration, "127.0.0.1", threadIDProvider,
-                new NullTimeProvider(), mock(HTTPClientProvider.class));
+                new NullTimeProvider(), mock(ConnectorProvider.class));
         // add various data
         ActionImpl action = mock(ActionImpl.class);
         beacon.addAction(action);

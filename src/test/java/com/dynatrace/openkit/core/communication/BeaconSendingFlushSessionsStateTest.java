@@ -48,7 +48,7 @@ public class BeaconSendingFlushSessionsStateTest {
         when(mockHttpClient.sendStatusRequest()).thenReturn(mockResponse);
 
         mockContext = mock(BeaconSendingContext.class);
-        when(mockContext.getHTTPClient()).thenReturn(mockHttpClient);
+        when(mockContext.getConnector()).thenReturn(mockHttpClient);
         when(mockContext.getAllOpenSessions()).thenReturn(new SessionImpl[]{mockSession1Open, mockSession2Open});
         when(mockContext.getNextFinishedSession()).thenReturn(mockSession3Closed)
                                                   .thenReturn(mockSession2Open)
