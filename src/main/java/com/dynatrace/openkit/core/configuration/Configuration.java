@@ -84,12 +84,12 @@ public class Configuration {
 
         this.device = device;
 
-       /* httpClientConfiguration =
+        httpClientConfiguration =
             new HTTPClientConfiguration(
                 endpointURL,
                 openKitType.getDefaultServerID(),
                 applicationID,
-                trustManager);*/
+                trustManager);
         this.connector = connector;
 
         this.applicationVersion = applicationVersion;
