@@ -16,7 +16,7 @@
 
 package com.dynatrace.openkit.core.communication;
 
-import com.dynatrace.openkit.protocol.HTTPClientImpl;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,13 +29,13 @@ import static org.mockito.Mockito.*;
 public class BeaconSendingRequestUtilTest {
 
     private BeaconSendingContext context;
-    private HTTPClientImpl httpClient;
+    private HTTPConnector httpClient;
     private StatusResponse response;
 
     @Before
     public void setUp() {
         context = mock(BeaconSendingContext.class);
-        httpClient = mock(HTTPClientImpl.class);
+        httpClient = mock(HTTPConnector.class);
         response = mock(StatusResponse.class);
 
         when(context.getHTTPClient()).thenReturn(httpClient);

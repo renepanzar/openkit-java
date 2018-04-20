@@ -43,7 +43,7 @@ public class AppMonOpenKitBuilder extends AbstractOpenKitBuilder {
     }
 
     @Override
-    Configuration buildConfiguration(Connector connector) {
+    Configuration buildConfiguration() {
         Device device = new Device(getOperatingSystem(), getManufacturer(), getModelID());
 
         BeaconCacheConfiguration beaconCacheConfiguration = new BeaconCacheConfiguration(getBeaconCacheMaxRecordAge(),
@@ -60,6 +60,6 @@ public class AppMonOpenKitBuilder extends AbstractOpenKitBuilder {
             device,
             getApplicationVersion(),
             beaconCacheConfiguration,
-            connector);
+            getConnector());
     }
 }

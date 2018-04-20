@@ -16,7 +16,7 @@
 
 package com.dynatrace.openkit.core.communication;
 
-import com.dynatrace.openkit.protocol.HTTPClientImpl;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.TimeSyncResponse;
 import com.dynatrace.openkit.providers.TimingProvider;
 
@@ -32,14 +32,14 @@ import static org.mockito.Mockito.*;
 
 public class BeaconSendingTimeSyncStateTest {
 
-    private HTTPClientImpl httpClient;
+    private HTTPConnector httpClient;
     private BeaconSendingContext stateContext;
     private TimingProvider timingProvider;
 
     @Before
     public void setUp() {
 
-        httpClient = mock(HTTPClientImpl.class);
+        httpClient = mock(HTTPConnector.class);
         stateContext = mock(BeaconSendingContext.class);
         timingProvider = mock(TimingProvider.class);
 

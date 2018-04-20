@@ -17,7 +17,7 @@
 package com.dynatrace.openkit.test.providers;
 
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
-import com.dynatrace.openkit.protocol.HTTPClientImpl;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.test.TestHTTPClient;
 import com.dynatrace.openkit.test.TestHTTPClient.Request;
@@ -41,7 +41,7 @@ public class TestHTTPClientProvider implements HTTPClientProvider {
     }
 
     @Override
-    public HTTPClientImpl createClient(HTTPClientConfiguration configuration) {
+    public HTTPConnector createClient(HTTPClientConfiguration configuration) {
         if (testHTTPClient != null) {
             previouslySentRequests.addAll(testHTTPClient.getSentRequests());
         }

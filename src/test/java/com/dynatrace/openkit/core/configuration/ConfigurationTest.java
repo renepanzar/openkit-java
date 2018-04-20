@@ -17,7 +17,7 @@
 package com.dynatrace.openkit.core.configuration;
 
 import com.dynatrace.openkit.core.Device;
-import com.dynatrace.openkit.protocol.HTTPConnector;
+import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.protocol.JsonSerializer;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
@@ -156,7 +156,7 @@ public class ConfigurationTest {
             super(openKitType, applicationName, applicationID, deviceID, endpointURL,
                 new TestSessionIDProvider(), new SSLStrictTrustManager(),
                 new Device("", "", ""), "", beaconCacheConfiguration,
-                new HTTPConnector("", "", new JsonSerializer()));
+				mock(Connector.class));
         }
     }
 }

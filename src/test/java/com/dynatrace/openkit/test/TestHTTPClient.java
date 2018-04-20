@@ -24,7 +24,7 @@ import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-public class TestHTTPClient extends HTTPClientImpl {
+public class TestHTTPClient extends HTTPConnector {
 
     public class Request {
 

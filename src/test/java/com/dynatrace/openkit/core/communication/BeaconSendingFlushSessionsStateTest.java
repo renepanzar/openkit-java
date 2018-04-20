@@ -17,7 +17,7 @@
 package com.dynatrace.openkit.core.communication;
 
 import com.dynatrace.openkit.core.SessionImpl;
-import com.dynatrace.openkit.protocol.HTTPClientImpl;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
 
 import org.junit.Before;
@@ -44,7 +44,7 @@ public class BeaconSendingFlushSessionsStateTest {
 
         StatusResponse mockResponse = mock(StatusResponse.class);
 
-        HTTPClientImpl mockHttpClient = mock(HTTPClientImpl.class);
+        HTTPConnector mockHttpClient = mock(HTTPConnector.class);
         when(mockHttpClient.sendStatusRequest()).thenReturn(mockResponse);
 
         mockContext = mock(BeaconSendingContext.class);

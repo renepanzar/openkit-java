@@ -20,13 +20,14 @@ import com.dynatrace.openkit.core.Device;
 import com.dynatrace.openkit.core.configuration.BeaconCacheConfiguration;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.OpenKitType;
-import com.dynatrace.openkit.protocol.HTTPConnector;
+import com.dynatrace.openkit.protocol.Connector;
 import com.dynatrace.openkit.protocol.JsonSerializer;
 import com.dynatrace.openkit.protocol.ssl.SSLStrictTrustManager;
 import com.dynatrace.openkit.providers.DefaultSessionIDProvider;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class ConfigurationTest {
     private static final String host = "localhost:9999";
@@ -47,6 +48,6 @@ public class ConfigurationTest {
         return new Configuration(OpenKitType.DYNATRACE, "", "", 17, tenantURL,
             new DefaultSessionIDProvider(), new SSLStrictTrustManager(), new Device("", "", ""), "",
             new BeaconCacheConfiguration(-1, -1, -1),
-            new HTTPConnector("", "", new JsonSerializer()));
+            mock(Connector.class));
     }
 }

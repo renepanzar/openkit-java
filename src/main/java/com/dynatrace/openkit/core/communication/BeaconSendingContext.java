@@ -18,7 +18,7 @@ package com.dynatrace.openkit.core.communication;
 
 import com.dynatrace.openkit.core.SessionImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
-import com.dynatrace.openkit.protocol.HTTPClientImpl;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
@@ -275,7 +275,7 @@ public class BeaconSendingContext {
     /**
      * Gets the HTTP client provider.
      *
-     * @return A class responsible for retrieving an instance of {@link HTTPClientImpl}.
+     * @return A class responsible for retrieving an instance of {@link HTTPConnector}.
      */
     HTTPClientProvider getHTTPClientProvider() {
         return httpClientProvider;
@@ -286,7 +286,7 @@ public class BeaconSendingContext {
      *
      * @return HTTP client received from {@link HTTPClientProvider}.
      */
-    HTTPClientImpl getHTTPClient() {
+    HTTPConnector getHTTPClient() {
         return httpClientProvider.createClient(configuration.getHttpClientConfig());
     }
 

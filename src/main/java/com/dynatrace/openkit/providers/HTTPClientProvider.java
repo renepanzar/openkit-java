@@ -17,7 +17,7 @@
 package com.dynatrace.openkit.providers;
 
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
-import com.dynatrace.openkit.protocol.HTTPClientImpl;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 
 /**
  * Interface for providing an HTTP client. Mostly needed for testing purposes.
@@ -25,7 +25,7 @@ import com.dynatrace.openkit.protocol.HTTPClientImpl;
 public interface HTTPClientProvider {
 
     /**
-     * Returns an HTTPClientImpl based on the provided configuration.
+     * Returns an HTTPConnector based on the provided configuration.
      */
-    HTTPClientImpl createClient(HTTPClientConfiguration configuration);
+    HTTPConnector createClient(HTTPClientConfiguration configuration);
 }

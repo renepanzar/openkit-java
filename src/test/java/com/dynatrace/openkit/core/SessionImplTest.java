@@ -22,7 +22,7 @@ import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.core.configuration.HTTPClientConfiguration;
 import com.dynatrace.openkit.protocol.Beacon;
-import com.dynatrace.openkit.protocol.HTTPClientImpl;
+import com.dynatrace.openkit.protocol.HTTPConnector;
 import com.dynatrace.openkit.protocol.StatusResponse;
 import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
@@ -393,8 +393,8 @@ public class SessionImplTest {
 
     @Test
     public void endSessionWithOpenRootActions() {
-		// mock a valid status response via the HTTPClientImpl to be sure the beacon cache is empty
-		final HTTPClientImpl httpClient = mock(HTTPClientImpl.class);
+		// mock a valid status response via the HTTPConnector to be sure the beacon cache is empty
+		final HTTPConnector httpClient = mock(HTTPConnector.class);
 		final StatusResponse statusResponse = new StatusResponse("", 200);
 		when(httpClient.sendBeaconRequest(isA(String.class), any(byte[].class))).thenReturn(statusResponse);
 		final HTTPClientProvider clientProvider = mock(HTTPClientProvider.class);
