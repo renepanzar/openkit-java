@@ -43,8 +43,8 @@ public class BeaconSendingCaptureOnStateTest {
         mockSession2Open = mock(SessionImpl.class);
         mockSession3Finished = mock(SessionImpl.class);
         mockSession4Finished = mock(SessionImpl.class);
-        when(mockSession1Open.sendBeacon(any(HTTPClientProvider.class))).thenReturn(new StatusResponse("", 200));
-        when(mockSession2Open.sendBeacon(any(HTTPClientProvider.class))).thenReturn(new StatusResponse("", 404));
+        when(mockSession1Open.sendBeacon()).thenReturn(new StatusResponse("", 200));
+        when(mockSession2Open.sendBeacon()).thenReturn(new StatusResponse("", 404));
 
         HTTPClientProvider mockHTTPClientProvider = mock(HTTPClientProvider.class);
 
@@ -119,14 +119,14 @@ public class BeaconSendingCaptureOnStateTest {
         //given
         BeaconSendingCaptureOnState target = new BeaconSendingCaptureOnState();
 
-        when(mockSession3Finished.sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class))).thenReturn(mock(StatusResponse.class));
-        when(mockSession4Finished.sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class))).thenReturn(mock(StatusResponse.class));
+        when(mockSession3Finished.sendBeacon()).thenReturn(mock(StatusResponse.class));
+        when(mockSession4Finished.sendBeacon()).thenReturn(mock(StatusResponse.class));
 
         //when calling execute
         target.doExecute(mockContext);
 
-        verify(mockSession3Finished, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
-        verify(mockSession4Finished, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
+        verify(mockSession3Finished, times(1)).sendBeacon();
+        verify(mockSession4Finished, times(1)).sendBeacon();
     }
 
     @Test
@@ -135,15 +135,15 @@ public class BeaconSendingCaptureOnStateTest {
         //given
         BeaconSendingCaptureOnState target = new BeaconSendingCaptureOnState();
 
-        when(mockSession3Finished.sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class))).thenReturn(null);
-        when(mockSession4Finished.sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class))).thenReturn(mock(StatusResponse.class));
+        when(mockSession3Finished.sendBeacon()).thenReturn(null);
+        when(mockSession4Finished.sendBeacon()).thenReturn(mock(StatusResponse.class));
         when(mockSession3Finished.isEmpty()).thenReturn(false);
 
         //when calling execute
         target.doExecute(mockContext);
 
-        verify(mockSession3Finished, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
-        verify(mockSession4Finished, times(0)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
+        verify(mockSession3Finished, times(1)).sendBeacon();
+        verify(mockSession4Finished, times(0)).sendBeacon();
 
         verify(mockContext, times(1)).getNextFinishedSession();
         verify(mockContext, times(1)).pushBackFinishedSession(mockSession3Finished);
@@ -155,15 +155,15 @@ public class BeaconSendingCaptureOnStateTest {
         //given
         BeaconSendingCaptureOnState target = new BeaconSendingCaptureOnState();
 
-        when(mockSession3Finished.sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class))).thenReturn(mock(StatusResponse.class));
-        when(mockSession4Finished.sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class))).thenReturn(mock(StatusResponse.class));
+        when(mockSession3Finished.sendBeacon()).thenReturn(mock(StatusResponse.class));
+        when(mockSession4Finished.sendBeacon()).thenReturn(mock(StatusResponse.class));
         when(mockSession3Finished.isEmpty()).thenReturn(true);
 
         //when calling execute
         target.doExecute(mockContext);
 
-        verify(mockSession3Finished, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
-        verify(mockSession4Finished, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
+        verify(mockSession3Finished, times(1)).sendBeacon();
+        verify(mockSession4Finished, times(1)).sendBeacon();
         verify(mockSession3Finished, times(1)).clearCapturedData();
         verify(mockSession4Finished, times(1)).clearCapturedData();
 
@@ -179,8 +179,8 @@ public class BeaconSendingCaptureOnStateTest {
         //when calling execute
         target.doExecute(mockContext);
 
-        verify(mockSession1Open, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
-        verify(mockSession2Open, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
+        verify(mockSession1Open, times(1)).sendBeacon();
+        verify(mockSession2Open, times(1)).sendBeacon();
         verify(mockContext, times(1)).setLastOpenSessionBeaconSendTime(org.mockito.Matchers.anyLong());
     }
 

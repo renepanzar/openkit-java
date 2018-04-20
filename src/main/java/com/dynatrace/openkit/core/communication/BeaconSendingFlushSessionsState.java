@@ -46,7 +46,7 @@ class BeaconSendingFlushSessionsState extends AbstractBeaconSendingState {
         // flush already finished (and previously ended) sessions
         SessionImpl finishedSession = context.getNextFinishedSession();
         while (finishedSession != null) {
-            finishedSession.sendBeacon(context.getHTTPClientProvider());
+            finishedSession.sendBeacon();
             finishedSession.clearCapturedData();
             finishedSession = context.getNextFinishedSession();
         }

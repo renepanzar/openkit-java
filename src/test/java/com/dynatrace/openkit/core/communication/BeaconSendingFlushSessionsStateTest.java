@@ -113,9 +113,9 @@ public class BeaconSendingFlushSessionsStateTest {
         target.doExecute(mockContext);
 
         // verify that beacons are sent
-        verify(mockSession1Open, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
-        verify(mockSession2Open, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
-        verify(mockSession3Closed, times(1)).sendBeacon(org.mockito.Matchers.any(HTTPClientProvider.class));
+        verify(mockSession1Open, times(1)).sendBeacon();
+        verify(mockSession2Open, times(1)).sendBeacon();
+        verify(mockSession3Closed, times(1)).sendBeacon();
     }
 
 }

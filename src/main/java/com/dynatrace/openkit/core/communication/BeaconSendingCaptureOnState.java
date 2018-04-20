@@ -81,7 +81,7 @@ class BeaconSendingCaptureOnState extends AbstractBeaconSendingState {
         // check if there's finished Sessions to be sent -> immediately send beacon(s) of finished Sessions
         SessionImpl finishedSession = context.getNextFinishedSession();
         while (finishedSession != null) {
-            statusResponse = finishedSession.sendBeacon(context.getHTTPClientProvider());
+            statusResponse = finishedSession.sendBeacon();
             if (statusResponse == null) {
                 // something went wrong,
                 if (!finishedSession.isEmpty()) {
@@ -112,7 +112,7 @@ class BeaconSendingCaptureOnState extends AbstractBeaconSendingState {
 
         SessionImpl[] openSessions = context.getAllOpenSessions();
         for (SessionImpl session : openSessions) {
-            statusResponse = session.sendBeacon(context.getHTTPClientProvider());
+            statusResponse = session.sendBeacon();
         }
 
         context.setLastOpenSessionBeaconSendTime(currentTimestamp);

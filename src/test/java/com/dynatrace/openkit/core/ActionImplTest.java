@@ -22,6 +22,7 @@ import com.dynatrace.openkit.api.WebRequestTracer;
 import com.dynatrace.openkit.core.caching.BeaconCacheImpl;
 import com.dynatrace.openkit.core.configuration.Configuration;
 import com.dynatrace.openkit.protocol.Beacon;
+import com.dynatrace.openkit.providers.HTTPClientProvider;
 import com.dynatrace.openkit.providers.ThreadIDProvider;
 import com.dynatrace.openkit.providers.TimingProvider;
 
@@ -909,7 +910,7 @@ public class ActionImplTest {
         final String clientIPAddress = "127.0.0.1";
         final ThreadIDProvider threadIDProvider = mock(ThreadIDProvider.class);
         final TimingProvider timingProvider = mock(TimingProvider.class);
-        return new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider);
+        return new Beacon(logger, beaconCache, configuration, clientIPAddress, threadIDProvider, timingProvider, mock(HTTPClientProvider.class));
     }
 
 }
